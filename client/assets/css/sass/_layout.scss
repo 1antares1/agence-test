@@ -306,6 +306,10 @@ md-list.md-dense md-list-item.md-3-line>.md-no-style {
     max-height: 36px !important;
 }
 
+md-radio-button {
+    outline-color: transparent;
+}
+
 .ag-flex-content-center {
     display: flex;
     display: -webkit-flex;

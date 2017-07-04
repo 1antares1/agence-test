@@ -90,7 +90,7 @@
         <md-content class="ag-md-content-sm ag-margin-t-10 ag-margin-b-10 ag-flex-horizontal-center" flex layout-padding>
             <md-radio-group ng-model="vmn.radioGroup1">
                 <md-radio-button class="md-primary ag-md-label-14" ng-repeat="item in vmn.typeReports" value="{{item.value}}" ng-click="vmn.executeReport(item.value)">
-                    <i class="fa fa-file-text" aria-hidden="true">&nbsp;&nbsp;</i>{{item.text}}
+                    <i class="fa" ng-class="{'fa-file-text': item.value === 0, 'fa-area-chart': item.value === 1, 'fa-pie-chart': item.value === 2}" aria-hidden="true">&nbsp;&nbsp;</i>{{item.text}}
                 </md-radio-button>
             </md-radio-group>
         </md-content>

@@ -154,6 +154,7 @@
 
         getPerformanceReport(): void {
             $self = this;
+            $self.$scope.performance.loading = true;
             $self.$scope.performance.onReadyStateChange(false, "Carregando...");
             if ($self.toUsers && $self.toUsers.length) {
                 let _userList: string[] = $self.toUsers.map((value: models.IConsultant, index: number, array: models.IConsultant[]) => {
