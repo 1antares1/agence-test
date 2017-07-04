@@ -1,0 +1,177 @@
+<div layout-gt-sm="row" layout="column" ng-cloak>
+    <div flex-gt-sm="25" flex>
+        <md-toolbar layout="row" class="md-hue-3 ag-md-menu-toolbar-filters">
+            <div class="md-toolbar-tools">
+                <span>filtros</span>
+            </div>
+        </md-toolbar>
+
+        <form name="formFilters" flex-gt-xs novalidate>
+            <div layout-gt-xs="row">
+                <md-input-container>
+                    <label class="ag-md-label-14">From date</label>
+                    <md-datepicker ng-model="vmn.fromSubmissionDate" name="fromSubmissiondate"></md-datepicker>
+                </md-input-container>
+
+                <md-input-container>
+                    <label class="ag-md-label-14">To date</label>
+                    <md-datepicker ng-model="vmn.toSubmissionDate" name="toSubmissiondate"></md-datepicker>
+                </md-input-container>
+            </div>
+        </form>
+    </div>
+
+    <md-divider></md-divider>
+
+    <div flex-gt-sm="25" flex>
+        <md-toolbar layout="row" class="md-hue-3 ag-md-menu-toolbar">
+            <div class="md-toolbar-tools">
+                <span>consultores disponíveis</span>
+            </div>
+        </md-toolbar>
+
+        <md-content class="ag-md-content-sm ag-margin-t-10 ag-margin-b-10">
+            <md-tooltip md-direction="bottom">Presionar encima para mover a direita</md-tooltip>
+            <md-list class="md-dense" dnd-list="vmn.fromUsers" flex>
+                <md-list-item class="md-3-line" ng-repeat="item in vmn.fromUsers | orderBy: 'no_usuario'" ng-click="vmn.toggleItem(0, item)">
+                    <img ng-src="/assets/images/profile.png" class="md-avatar" alt="{{item.no_email}}" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.no_usuario }}</h3>
+                        <p>{{ item.ds_senha }}</p>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-3-line" ng-if="!vmn.fromUsers || !vmn.fromUsers.length">
+                    <img ng-src="{{$index}}" class="md-avatar ag-md-avatar-none" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3 i18n="_SystemMessageNoData_"></h3>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+
+    <md-divider></md-divider>
+
+    <div flex-gt-sm="25" flex>
+        <md-toolbar layout="row" class="md-hue-3 ag-md-menu-toolbar-selected">
+            <div class="md-toolbar-tools">
+                <span>consultores selecionados</span>
+            </div>
+        </md-toolbar>
+
+        <md-content class="ag-md-content-sm ag-margin-t-10 ag-margin-b-10">
+            <md-tooltip md-direction="bottom">Presionar encima para mover a esquerda</md-tooltip>
+            <md-list class="md-dense" flex>
+                <md-list-item class="md-3-line" ng-repeat="item in vmn.toUsers | orderBy: 'no_usuario'" ng-click="vmn.toggleItem(1, item)">
+                    <img ng-src="/assets/images/profile.png" class="md-avatar" alt="{{item.no_email}}" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3>{{ item.no_usuario }}</h3>
+                        <p>{{ item.ds_senha }}</p>
+                    </div>
+                </md-list-item>
+                <md-list-item class="md-3-line" ng-if="!vmn.toUsers || !vmn.toUsers.length">
+                    <img ng-src="{{$index}}" class="md-avatar md-avatar ag-md-avatar-none" />
+                    <div class="md-list-item-text" layout="column">
+                        <h3 i18n="_SystemMessageNoData_"></h3>
+                    </div>
+                </md-list-item>
+            </md-list>
+        </md-content>
+    </div>
+
+    <md-divider></md-divider>
+
+    <div flex-gt-sm="25" flex>
+        <md-toolbar layout="row" class="md-hue-3 ag-md-menu-toolbar-options">
+            <div class="md-toolbar-tools">
+                <span>execute</span>
+            </div>
+        </md-toolbar>
+        <md-content class="ag-md-content-sm ag-margin-t-10 ag-margin-b-10 ag-flex-horizontal-center" flex layout-padding>
+            <md-radio-group ng-model="vmn.radioGroup1">
+                <md-radio-button class="md-primary ag-md-label-14" ng-repeat="item in vmn.typeReports" value="{{item.value}}" ng-click="vmn.executeReport(item.value)">
+                    <i class="fa fa-file-text" aria-hidden="true">&nbsp;&nbsp;</i>{{item.text}}
+                </md-radio-button>
+            </md-radio-group>
+        </md-content>
+    </div>
+</div>
+
+<md-divider></md-divider>
+
+<div class="ag-padding-t-25" layout-gt-lg="row" layout="column" ng-cloak ng-if="vmn.consultantAction != null">
+    <md-toolbar class="md-accent">
+        <div class="md-toolbar-tools">
+            <h2 class="md-flex">{{vmn.actionName}}</h2>
+        </div>
+    </md-toolbar>
+
+    <md-content flex layout-padding>
+        <table cellspacing="1" cellpadding="3" width="100%" bgcolor="#cccccc" id="pesquisaAvancada" ng-repeat="user in vmn.userAmounts" ng-if="vmn.userAmounts">
+            <tbody>
+                <tr bgcolor="#efefef">
+                    <td colspan="5"><span class="style3 ag-md-label-14">{{user.no_usuario}}</span></td>
+                </tr>
+                <tr bgcolor="#fafafa">
+                    <td nowrap="">
+                        <div align="center"><strong>Período</strong></div>
+                    </td>
+                    <td>
+                        <div align="center"><strong>Receita Líquida</strong></div>
+                    </td>
+                    <td>
+                        <div align="center"><strong>Custo Fixo</strong></div>
+                    </td>
+                    <td>
+                        <div align="center"><strong>Comissão</strong></div>
+                    </td>
+                    <td>
+                        <div align="center"><strong>Lucro</strong></div>
+                    </td>
+                </tr>
+                <tr bgcolor="#fafafa" ng-repeat="data in user.months">
+                    <td nowrap="">{{vmn.getMonthName(data.month)}} de {{data.year}}</td>
+                    <td>
+                        <div align="right">{{data.information.net_amount | currency}}</div>
+                    </td>
+                    <td>
+                        <div align="right">{{data.information.brut_salario | currency}}</div>
+                    </td>
+                    <td>
+                        <div align="right">{{data.information.commission | currency}}</div>
+                    </td>
+                    <td>
+                        <div align="right">
+                            <font ng-class="{ 'ag-low': data.information.profit < 0 }">{{data.information.profit | currency}}</font>
+                        </div>
+                    </td>
+                </tr>
+                <tr bgcolor="#efefef">
+                    <td nowrap="" bgcolor="#efefef"><strong class="ag-md-label-14">SALDO</strong></td>
+                    <td>
+                        <div align="right">
+                            <font color="#000000" class="ag-md-label-14">{{vmn.getBalance("net_amount", user.months) | currency}}</font>
+                        </div>
+                    </td>
+                    <td>
+                        <div align="right">
+                            <font color="#000000" class="ag-md-label-14">{{vmn.getBalance("brut_salario", user.months) | currency}}</font>
+                        </div>
+                    </td>
+                    <td>
+                        <div align="right">
+                            <font color="#000000" class="ag-md-label-14">{{vmn.getBalance("commission", user.months) | currency}}</font>
+                        </div>
+                    </td>
+                    <td>
+                    <div align="right">
+                        <font color="#0000FF" class="ag-md-label-14 ag-md-bold">{{vmn.getBalance("profit", user.months) | currency}}</font>
+                    </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <h4 ng-if="!vmn.userAmounts" i18n="_SystemMessageNoData_"></h4>
+    </md-content>
+
+</div>

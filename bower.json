@@ -1,0 +1,60 @@
+{
+  "name": "agence-test",
+  "version": "0.1.0",
+  "description": "",
+  "authors": [
+    "koaltares@outlook.com"
+  ],
+  "license": "MIT",
+  "homepage": "http://localhost:8080",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components"
+  ],
+  "devDependencies": {
+    "sinon": "~1.15.4",
+    "bardjs": "~0.1.10"
+  },
+  "dependencies": {
+    "pace": "~1.0.2",
+    "jquery": "~3.2.1",
+    "angular": "~1.6.4",
+    "angular-animate": "~1.6.4",
+    "angular-aria": "~1.6.4",
+    "angular-datatables": "~0.5.5",
+    "angularjs-toaster": "~2.1.0",
+    "angular-loading-bar": "~0.9.0",
+    "angular-local-storage": "~0.2.7",
+    "angular-material": "~1.1.4",
+    "angular-messages": "~1.6.4",
+    "angular-resource": "~1.6.4",
+    "angular-sanitize": "~1.6.4",
+    "angular-ui-mask": "~1.8.6",
+    "angular-ui-router": "~0.3.1",
+    "animate.css": "~3.5.2",
+    "bluebird": "~3.4.7",
+    "datatables": "~1.10.12",
+    "font-awesome": "~4.5.0",
+    "lodash": "~4.16.6",
+    "moment": "~2.12.0",
+    "toastr": "~2.1.0"
+  },
+  "overrides": {
+    "font-awesome": {
+      "main": [
+        "css/font-awesome.css"
+      ]
+    },
+    "pace": {
+      "main": [
+        "pace.min.js",
+        "themes/silver/pace-theme-loading-bar.css"
+      ]
+    }
+  },
+  "resolutions": {
+    "angular": ">=1.2.18",
+    "sinon": "~2.3.6"
+  }
+}

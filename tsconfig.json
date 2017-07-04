@@ -1,16 +1,19 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
-    "noImplicitAny": true,
     "module": "commonjs",
     "noEmitOnError": true,
-    "removeComments": false,
+    "noImplicitAny": true,
+    "removeComments": true,
+    "declaration": false,
     "sourceMap": true,
-    "target": "es5"
+    "target": "es5",
+    "experimentalDecorators": true,
+    "watch": true,
+    "typeRoots": ["typings/globals", "typings/modules"]
   },
   "exclude": [
     "node_modules",
-    "bower_components",
-    "typings/modules"
+    "bower_components"
   ]
 }

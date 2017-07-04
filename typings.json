@@ -1,12 +1,22 @@
 {
   "dependencies": {
+    "angular-material": "registry:dt/angular-material#1.1.0+20170315084937",
     "body-parser": "registry:dt/body-parser#1.16.0+20170321201455",
     "debug": "registry:npm/debug#2.0.0+20170504163145",
     "express": "registry:npm/express#4.14.0+20170217205433",
+    "lodash": "registry:npm/lodash#4.0.0+20161015015725",
     "morgan": "registry:dt/morgan#1.7.0+20160726064905",
     "serve-favicon": "registry:dt/serve-favicon#2.2.0+20161128184045"
   },
   "devDependencies": {
-    "express": "registry:dt/express#4.0.0+20170118060322"
+    "angular": "registry:dt/angular#1.6.0+20170321201455",
+    "angular-local-storage": "registry:dt/angular-local-storage#0.1.5+20160726182927",
+    "angular-resource": "registry:dt/angular-resource#1.5.0+20161206185711",
+    "express": "registry:dt/express#4.0.0+20170118060322",
+    "lodash": "registry:dt/lodash#4.14.0+20170324155812"
+  },
+  "globalDevDependencies": {
+    "hubspot-pace": "registry:dt/hubspot-pace#0.7.5+20160819211420",
+    "jquery": "registry:dt/jquery#1.10.0+20170310222111"
   }
 }

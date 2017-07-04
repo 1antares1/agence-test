@@ -1,0 +1,18 @@
+<div class="animate fadeIn" ng-cloak>
+    <md-content flex layout-padding>
+        <md-content>
+            <md-tabs md-dynamic-height md-border-bottom>
+                <md-tab label="{{vm.getTabName(0)}}" ng-click="vm.activeTab = 0">
+                    <md-content class="md-padding">
+                        <consultants />
+                    </md-content>
+                </md-tab>
+                <md-tab label="{{vm.getTabName(1)}}" ng-click="vm.activeTab = 1">
+                    <md-content class="md-padding">
+                        <customers />
+                    </md-content>
+                </md-tab>
+            </md-tabs>
+        </md-content>
+    </md-content>
+</div>

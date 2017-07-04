@@ -1,0 +1,43 @@
+﻿<div class="container-full animated fadeIn">
+    <div class="container order">
+        <busy></busy>
+        <div class="corporate-bg nna-padding-b-none">
+            <div id="notary_Details">
+                <h2 i18n="_NotariesDetailsHeader_"></h2>
+                <br />
+                <div class="notaries" ng-show="!vm.loading && !vm.thirdPartyEnroll">
+                    <blockquote>
+                        <h4 i18n="_CompanyName_|prepend">:<strong>&nbsp;&nbsp;&nbsp;&nbsp;{{vm.authMe.organizationName}}</strong></h4>
+                        <h4 ng-if="vm.mode == 1" i18n="_NotaryDetailsEdit_|prepend">:<strong>&nbsp;{{vm.notaryMessage || (vm.model.firstName + ' ' + vm.model.lastName)}}</strong></h4>
+                    </blockquote>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p ng-if="vm.mode == 2 " i18n="_NotariesDetailsDescription_"></p>
+                    </div>
+                    <div class="col-md-6" ng-if="vm.notaryItems.indexOf('formSendInvitation') >= 0">
+                        <div class="form-group row" ng-if="vm.mode == 2">
+                            <div class="form-group row">
+                                <div class="col-lg-8 col-lg-offset-4 col-md-9 col-md-offset-3 col-sm-6 col-xs-12 nna-flex-left">
+                                    <switch id="enabSendInvitationled" name="enabled" on="Yes" off="No" ng-model="vm.sendInvitation" class="green medium"></switch>
+                                    <label class="nna-padding-t-none nna-margin-l-15" for="SendInvitation" i18n="_SendNotaryInvitation_"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="nna-hr">
+            <uib-tabset active="vm.activeTab" ng-if="!vm.thirdPartyEnroll">
+                <uib-tab ng-repeat="tab in vm.notaryTabs" heading="{{tab.i18n}}" index="$index" select="vm.go(tab.url)">
+                    <hr class="nna-hr">
+                    <br />
+                </uib-tab>
+            </uib-tabset>
+            <div>
+                <div ng-if="!vm.thirdPartyEnroll" ui-view></div>
+                <div ng-if="vm.thirdPartyEnroll" ui-view="app.punchout.general"></div>
+            </div>
+        </div>
+    </div>
+</div>

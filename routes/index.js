@@ -1,9 +1,53 @@
-// 'use strict';
-// var express = require('express');
-// var router = express.Router();
-// /* GET home page. */
-// router.get('/', function (req, res) {
-//     res.render('index', { title: 'Express' });
-// });
-// module.exports = router;
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var route_1 = require("./route");
+var url = require("url");
+var IndexRoute = (function (_super) {
+    __extends(IndexRoute, _super);
+    function IndexRoute() {
+        return _super.call(this) || this;
+    }
+    IndexRoute.appSettings = function (req, res) {
+        var _fullUrl = function (hostname) {
+            return url.format({
+                protocol: req.protocol,
+                host: hostname
+            });
+        };
+        var obj = {
+            appConfig: {},
+            urls: {
+                consultant: process.env.consultant_Url ? process.env.consultant_Url : _fullUrl(req.get("host"))
+            }
+        };
+        return obj;
+    };
+    IndexRoute.create = function (path, router, type, options) {
+        var _target = (path === "/") ? " index " : " ";
+        console.log("[IndexRoute::create] Creating" + _target + "route: '" + path + "')");
+        router.get(path, function (req, res, next) {
+            switch (path) {
+                case "/api/settings":
+                    options = IndexRoute.appSettings(req, res);
+                    break;
+            }
+            new IndexRoute().index(req, res, type, options);
+        });
+    };
+    IndexRoute.prototype.index = function (req, res, type, options) {
+        this.render(req, res, type, options);
+    };
+    return IndexRoute;
+}(route_1.BaseRoute));
+exports.IndexRoute = IndexRoute;
 //# sourceMappingURL=index.js.map
