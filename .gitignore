@@ -3,7 +3,6 @@
 *.user
 *.gpState
 *.suo
-.vscode
 bin
 obj
 output
