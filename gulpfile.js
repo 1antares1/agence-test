@@ -211,11 +211,10 @@ gulp.task('images-icons', [], function () {
 
 gulp.task('prod-minify-js', ['inject'], function () {
     log('Generating js final files');
-    log(config.client + '**/*.js');
 
-    return gulp.src(config.client + '**/*.js')
-    .pipe($.uglify({ mangle: false }))
-    .pipe(gulp.dest(config.env.prod.client + 'js/'));
+    return gulp.src(config.env.prod.client + 'js/*.js').
+    pipe($.uglify({ mangle: false })).
+    pipe(gulp.dest(config.env.prod.client + 'js/'));
 
 });
 
