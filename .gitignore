@@ -8,6 +8,7 @@ bin
 obj
 output
 tmp
+azure
 /packages
 
 # Ignore Node & Bower
@@ -16,7 +17,6 @@ node_modules
 bower_components
 client/bower_components
 build
-azure
 #.tmp
 
 # Ignore Test reporters
