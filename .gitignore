@@ -14,7 +14,7 @@ azure
 ###################
 node_modules
 bower_components
-client/bower_components
+./client/bower_components
 build
 #.tmp
 
