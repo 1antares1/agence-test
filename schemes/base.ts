@@ -6,10 +6,10 @@ export default class BaseScheme {
 
     constructor() {
         this.connection = mysql.createConnection({
-            host: "localhost",
+            host: "br-cdbr-azure-south-b.cloudapp.net",
             port: 3306,
-            user: "root",
-            password: "_4dm1nPa$$w0rd-",
+            user: "bb1c35f730a5d0",
+            password: "1e4befcb",
             database: "agencedb",
         });
     }
@@ -51,7 +51,7 @@ export default class BaseScheme {
 
     releaseConnection(connection: mysql.IConnection, ending?: boolean): void {
         if(connection) {
-            connection.end();
+            connection.destroy();
             if(ending) {
                 this.tryCloseSqlConnection();
             }

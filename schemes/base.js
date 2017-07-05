@@ -5,10 +5,10 @@ var BaseScheme = (function () {
     function BaseScheme() {
         this.schemeOn = false;
         this.connection = mysql.createConnection({
-            host: "localhost",
+            host: "br-cdbr-azure-south-b.cloudapp.net",
             port: 3306,
-            user: "root",
-            password: "_4dm1nPa$$w0rd-",
+            user: "bb1c35f730a5d0",
+            password: "1e4befcb",
             database: "agencedb"
         });
     }
@@ -52,7 +52,7 @@ var BaseScheme = (function () {
     };
     BaseScheme.prototype.releaseConnection = function (connection, ending) {
         if (connection) {
-            connection.end();
+            connection.destroy();
             if (ending) {
                 this.tryCloseSqlConnection();
             }
