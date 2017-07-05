@@ -58,11 +58,12 @@ var agence;
                         $self.updateText(elm, attrs["i18n"]);
                     });
                 };
-                i18nDirective.$inject = ['localize'];
                 return i18nDirective;
             }());
+            i18nDirective.$inject = ['localize'];
             directives.i18nDirective = i18nDirective;
             angular.module(common.moduleName).directive("i18n", ["localize", function (localize) { return new agence.common.directives.i18nDirective(localize); }]);
         })(directives = common.directives || (common.directives = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=i18n-directive.js.map

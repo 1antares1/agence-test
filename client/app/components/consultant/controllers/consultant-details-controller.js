@@ -202,25 +202,26 @@ var agence;
                     $self.serviceFacade.notification.failed(response.toString());
                 }
             };
-            NotaryDetailsController.$inject = [
-                "$scope",
-                "$compile",
-                "$state",
-                "$stateParams",
-                "$q",
-                "$timeout",
-                "$window",
-                "configService",
-                "serviceFacade",
-                "lifeCycle",
-                "utilService",
-                "localize",
-                "DTOptionsBuilder",
-                "DTColumnBuilder"
-            ];
             return NotaryDetailsController;
         }(agence.common.controllers.BaseController));
+        NotaryDetailsController.$inject = [
+            "$scope",
+            "$compile",
+            "$state",
+            "$stateParams",
+            "$q",
+            "$timeout",
+            "$window",
+            "configService",
+            "serviceFacade",
+            "lifeCycle",
+            "utilService",
+            "localize",
+            "DTOptionsBuilder",
+            "DTColumnBuilder"
+        ];
         consultant.NotaryDetailsController = NotaryDetailsController;
         angular.module(consultant.moduleName).controller("notaryDetailsController", NotaryDetailsController);
     })(consultant = agence.consultant || (agence.consultant = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=consultant-details-controller.js.map

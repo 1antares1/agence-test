@@ -11,3 +11,4 @@ var agence;
         angular.module(performance.moduleName, dependencies);
     })(performance = agence.performance || (agence.performance = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=performance.module.js.map

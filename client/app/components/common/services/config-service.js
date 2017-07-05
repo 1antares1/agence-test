@@ -47,11 +47,12 @@ var agence;
                     this.api = new Api();
                     this.appSettings = appsettings;
                 }
-                ConfigService.$inject = ["appSettings"];
                 return ConfigService;
             }());
+            ConfigService.$inject = ["appSettings"];
             services.ConfigService = ConfigService;
             angular.module(common.moduleName).service("configService", ConfigService);
         })(services = common.services || (common.services = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=config-service.js.map

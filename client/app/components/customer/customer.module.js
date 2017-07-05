@@ -6,3 +6,4 @@ var agence;
         angular.module(customer.moduleName, []);
     })(customer = agence.customer || (agence.customer = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=customer.module.js.map

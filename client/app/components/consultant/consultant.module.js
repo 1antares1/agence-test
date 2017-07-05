@@ -7,3 +7,4 @@ var agence;
         angular.module(consultant.moduleName, _dependencies);
     })(consultant = agence.consultant || (agence.consultant = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=consultant.module.js.map

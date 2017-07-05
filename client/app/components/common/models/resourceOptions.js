@@ -17,3 +17,4 @@ var agence;
         })(models = common.models || (common.models = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=resourceOptions.js.map

@@ -33,11 +33,12 @@ var agence;
                     var urlFragment = this.ngUtil.format("{0}{1}", fragment, this.configService.api.url.fragments[common.APIConcepts[common.APIConcepts.report]]);
                     return this.getAnonymousResource(urlFragment);
                 };
-                ConsultantDataService.$inject = ["$resource", "configService", "utilService"];
                 return ConsultantDataService;
             }(services.DataAccessService));
+            ConsultantDataService.$inject = ["$resource", "configService", "utilService"];
             services.ConsultantDataService = ConsultantDataService;
             angular.module(common.moduleName).service("consultantDataService", ConsultantDataService);
         })(services = common.services || (common.services = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=consultant-data-service.js.map

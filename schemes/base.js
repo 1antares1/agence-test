@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require("mysql");
 var BaseScheme = (function () {
     function BaseScheme() {
@@ -9,7 +9,7 @@ var BaseScheme = (function () {
             port: 3306,
             user: "bb1c35f730a5d0",
             password: "1e4befcb",
-            database: "agencedb"
+            database: "agencedb",
         });
     }
     BaseScheme.prototype.tryGetSqlConnection = function (callback) {
@@ -60,4 +60,5 @@ var BaseScheme = (function () {
     };
     return BaseScheme;
 }());
-exports["default"] = BaseScheme;
+exports.default = BaseScheme;
+//# sourceMappingURL=base.js.map

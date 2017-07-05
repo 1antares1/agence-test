@@ -69,18 +69,6 @@ export class Server {
             res.send(err.message);
         });
 
-        // error handlers
-
-        // development error handler
-        // will print stacktrace
-        // if (app.get("env") === "development") {
-        //     app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
-        //         console.log(err.message);
-        //         res.status(err.status || 500);
-        //         res.send(err.message);
-        //     });
-        // }
-
         // error handling
         app.use(errorHandler());
     }

@@ -168,12 +168,13 @@ var agence;
                     var removeNotaryResource = null;
                 };
             };
-            CustomersController.$inject = [
-                "$state", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope", "$rootScope"
-            ];
             return CustomersController;
         }());
+        CustomersController.$inject = [
+            "$state", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope", "$rootScope"
+        ];
         customer.CustomersController = CustomersController;
         angular.module(customer.moduleName).controller("customersController", CustomersController);
     })(customer = agence.customer || (agence.customer = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=customers-controller.js.map

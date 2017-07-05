@@ -14,18 +14,19 @@ var agence;
             var LifeCycleConstant = (function () {
                 function LifeCycleConstant() {
                 }
-                LifeCycleConstant.lifeCycleApp = {
-                    IS_HTTP_REQUEST_VALID: false,
-                    DEFAULT_BRANDING_LINK_ID: "brandingLogoLink",
-                    DEFAULT_IMAGE_SRC: "./content/images/image-default.png",
-                    DEFAULT_HEADER_LOGO_ID: "companyLogo",
-                    DEFAULT_HEADER_LOGO_SRC: "/content/images/logo.png",
-                    CONSULTANT_INFORMATION: null
-                };
                 return LifeCycleConstant;
             }());
+            LifeCycleConstant.lifeCycleApp = {
+                IS_HTTP_REQUEST_VALID: false,
+                DEFAULT_BRANDING_LINK_ID: "brandingLogoLink",
+                DEFAULT_IMAGE_SRC: "./content/images/image-default.png",
+                DEFAULT_HEADER_LOGO_ID: "companyLogo",
+                DEFAULT_HEADER_LOGO_SRC: "/content/images/logo.png",
+                CONSULTANT_INFORMATION: null
+            };
             constants.LifeCycleConstant = LifeCycleConstant;
             angular.module(common.moduleName).constant("lifeCycle", [function () { return new LifeCycleConstant(); }]);
         })(constants = common.constants || (common.constants = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=lifecycle-constant.js.map

@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var ConsultantReport = (function () {
     function ConsultantReport(co_os, co_sistema, co_arquitectura, ds_os, dt_sol, dt_inicio, co_status, co_factura, num_nf, co_cliente, data_emissao, data_month, data_year, comissao_cn, valor, total_imp_inc, total, net_amount, brut_salario, commission, profit, co_usuario, no_usuario, no_email, nu_telefone, url_foto, msn, mounths) {
         this.co_os = co_os;
@@ -34,3 +34,4 @@ var ConsultantReport = (function () {
     return ConsultantReport;
 }());
 exports.ConsultantReport = ConsultantReport;
+//# sourceMappingURL=consultantReport.js.map

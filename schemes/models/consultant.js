@@ -1,5 +1,5 @@
 "use strict";
-exports.__esModule = true;
+Object.defineProperty(exports, "__esModule", { value: true });
 var Consultant = (function () {
     function Consultant(co_usuario, no_usuario, ds_senha, nu_matricula, uf_orgao_emissor, no_email, url_foto, co_tipo_usuario) {
         this.co_usuario = co_usuario;
@@ -14,3 +14,4 @@ var Consultant = (function () {
     return Consultant;
 }());
 exports.Consultant = Consultant;
+//# sourceMappingURL=consultant.js.map

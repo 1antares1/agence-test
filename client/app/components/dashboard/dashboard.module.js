@@ -7,3 +7,4 @@ var agence;
         angular.module(dashboard.moduleName, dependencies);
     })(dashboard = agence.dashboard || (agence.dashboard = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=dashboard.module.js.map

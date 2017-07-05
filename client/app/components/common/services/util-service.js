@@ -133,11 +133,12 @@ var agence;
                     this.confirmPageExit = value;
                     this.clearPageSesion = value;
                 };
-                UtilService.$inject = ["$templateCache", "$window"];
                 return UtilService;
             }());
+            UtilService.$inject = ["$templateCache", "$window"];
             services.UtilService = UtilService;
             angular.module(agence.appName).service("utilService", UtilService);
         })(services = common.services || (common.services = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=util-service.js.map

@@ -16,3 +16,4 @@ var agence;
         angular.module(consultant.moduleName).directive("consultants", [function () { return new ConsultantsDirective(); }]);
     })(consultant = agence.consultant || (agence.consultant = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=consultants-directive.js.map

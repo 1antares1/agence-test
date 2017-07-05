@@ -117,6 +117,7 @@ var agence;
             };
             ConsultantsController.prototype.getPerformanceReport = function () {
                 $self = this;
+                $self.$scope.performance.loading = true;
                 $self.$scope.performance.onReadyStateChange(false, "Carregando...");
                 if ($self.toUsers && $self.toUsers.length) {
                     var _userList = $self.toUsers.map(function (value, index, array) {
@@ -168,12 +169,13 @@ var agence;
                     angular.element('.dataTables_processing').hide();
                 };
             };
-            ConsultantsController.$inject = [
-                "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
-            ];
             return ConsultantsController;
         }());
+        ConsultantsController.$inject = [
+            "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
+        ];
         consultant.ConsultantsController = ConsultantsController;
         angular.module(consultant.moduleName).controller("consultantsController", ConsultantsController);
     })(consultant = agence.consultant || (agence.consultant = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=consultants-controller.js.map

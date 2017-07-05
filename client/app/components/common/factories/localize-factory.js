@@ -78,9 +78,9 @@ var agence;
                     }
                     return _result;
                 };
-                Localize.$inject = ["$http", "$rootScope", "$window"];
                 return Localize;
             }());
+            Localize.$inject = ["$http", "$rootScope", "$window"];
             factories.Localize = Localize;
             ;
             function factory($http, $rootScope, $window) {
@@ -90,3 +90,4 @@ var agence;
         })(factories = common.factories || (common.factories = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=localize-factory.js.map

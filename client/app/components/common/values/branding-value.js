@@ -20,3 +20,4 @@ var agence;
         })(values = common.values || (common.values = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=branding-value.js.map

@@ -96,19 +96,20 @@ var agence;
                         $self.current = (!$self.ngUtil.isUndefinedOrNull(this.tabs) ? this.tabs[0] : null);
                     }
                 };
-                MenuController.$inject = [
-                    "$rootScope",
-                    "$scope",
-                    "$state",
-                    "serviceFacade",
-                    "utilService",
-                    "lifeCycle",
-                    "localize",
-                    "branding"
-                ];
                 return MenuController;
             }(controllers.BaseController));
+            MenuController.$inject = [
+                "$rootScope",
+                "$scope",
+                "$state",
+                "serviceFacade",
+                "utilService",
+                "lifeCycle",
+                "localize",
+                "branding"
+            ];
             controllers.MenuController = MenuController;
         })(controllers = common.controllers || (common.controllers = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=menu-controller.js.map

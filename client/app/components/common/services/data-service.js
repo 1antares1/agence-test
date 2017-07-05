@@ -87,11 +87,12 @@ var agence;
                     };
                 };
                 ;
-                DataAccessService.$inject = ["$resource", "configService"];
                 return DataAccessService;
             }());
+            DataAccessService.$inject = ["$resource", "configService"];
             services.DataAccessService = DataAccessService;
             angular.module(common.moduleName).service("dataService", DataAccessService);
         })(services = common.services || (common.services = {}));
     })(common = agence.common || (agence.common = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=data-service.js.map

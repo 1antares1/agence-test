@@ -82,10 +82,11 @@ var agence;
                     $self.onReadyStateChange(true, null);
                 };
             };
-            PerformanceController.$inject = ["$scope", "$state", "serviceFacade", "utilService", "localize"];
             return PerformanceController;
         }(common.controllers.BaseController));
+        PerformanceController.$inject = ["$scope", "$state", "serviceFacade", "utilService", "localize"];
         performance.PerformanceController = PerformanceController;
         angular.module(performance.moduleName).controller("performanceController", PerformanceController);
     })(performance = agence.performance || (agence.performance = {}));
 })(agence || (agence = {}));
+//# sourceMappingURL=performance-controller.js.map
