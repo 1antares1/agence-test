@@ -9,9 +9,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var route_1 = require("./route");
 var url = require("url");
+/**
+ * / route
+ *
+ * @class User
+ */
 var IndexRoute = (function (_super) {
     __extends(IndexRoute, _super);
     function IndexRoute() {
@@ -32,6 +37,13 @@ var IndexRoute = (function (_super) {
         };
         return obj;
     };
+    /**
+     * Create the routes.
+     *
+     * @class IndexRoute
+     * @method create
+     * @static
+     */
     IndexRoute.create = function (path, router, type, options) {
         var _target = (path === "/") ? " index " : " ";
         console.log("[IndexRoute::create] Creating" + _target + "route: '" + path + "')");
@@ -44,10 +56,18 @@ var IndexRoute = (function (_super) {
             new IndexRoute().index(req, res, type, options);
         });
     };
+    /**
+     * The home page route.
+     *
+     * @class IndexRoute
+     * @method index
+     * @param req {Request} The express Request object.
+     * @param res {Response} The express Response object.
+     * @next {NextFunction} Execute the next method.
+     */
     IndexRoute.prototype.index = function (req, res, type, options) {
         this.render(req, res, type, options);
     };
     return IndexRoute;
 }(route_1.BaseRoute));
 exports.IndexRoute = IndexRoute;
-//# sourceMappingURL=index.js.map

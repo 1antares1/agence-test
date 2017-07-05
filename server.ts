@@ -172,7 +172,7 @@ let onError = (error: any): void => {
     }
 }
 
-let httpPort = normalizePort(process.env.port || 3000);
+let httpPort = normalizePort(process.env.PORT || 3000);
 let app = Server.bootstrap().app;
 app.set("port", httpPort);
 

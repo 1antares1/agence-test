@@ -9,7 +9,7 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var base_1 = require("./base");
 var CollectionType;
 (function (CollectionType) {
@@ -96,7 +96,7 @@ var ConsultantCollections = (function (_super) {
                                         net_amount: _collection[i].net_amount,
                                         brut_salario: _collection[i].brut_salario,
                                         commission: _collection[i].commission,
-                                        profit: _collection[i].profit,
+                                        profit: _collection[i].profit
                                     }
                                 });
                             }
@@ -126,6 +126,5 @@ var ConsultantCollections = (function (_super) {
         }
     };
     return ConsultantCollections;
-}(base_1.default));
+}(base_1["default"]));
 exports.ConsultantCollections = ConsultantCollections;
-//# sourceMappingURL=consultant-collections.js.map

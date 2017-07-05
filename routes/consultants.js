@@ -9,9 +9,14 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-Object.defineProperty(exports, "__esModule", { value: true });
+exports.__esModule = true;
 var index_1 = require("./index");
 var consultant_collections_1 = require("../schemes/consultant-collections");
+/**
+ * / route
+ *
+ * @class User
+ */
 var ConsultantRoute = (function (_super) {
     __extends(ConsultantRoute, _super);
     function ConsultantRoute(_app, _router) {
@@ -54,4 +59,3 @@ var ConsultantRoute = (function (_super) {
     return ConsultantRoute;
 }(index_1.IndexRoute));
 exports.ConsultantRoute = ConsultantRoute;
-//# sourceMappingURL=consultants.js.map
