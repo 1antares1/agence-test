@@ -55,6 +55,7 @@
   },
   "resolutions": {
     "angular": ">=1.2.18",
-    "sinon": "~2.3.6"
+    "sinon": "~2.3.6",
+    "jquery": "~3.2.1"
   }
 }
