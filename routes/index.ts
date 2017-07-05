@@ -27,7 +27,7 @@ export class IndexRoute extends BaseRoute {
             _protocol = _protocol.split(/\s*,\s*/)[0];
 
             return url.format({
-                protocol: req.protocol,
+                protocol: _protocol,
                 host: hostname
             });
         }

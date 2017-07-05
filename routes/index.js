@@ -22,7 +22,7 @@ var IndexRoute = (function (_super) {
             var _protocol = (req.connection.encrypted) ? "https:" : (req.headers["x-forwarded-proto"] || req.protocol);
             _protocol = _protocol.split(/\s*,\s*/)[0];
             return url.format({
-                protocol: req.protocol,
+                protocol: _protocol,
                 host: hostname
             });
         };
