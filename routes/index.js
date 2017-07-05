@@ -19,10 +19,8 @@ var IndexRoute = (function (_super) {
     }
     IndexRoute.appSettings = function (req, res) {
         var _fullUrl = function (hostname) {
-            var _protocol = (req.connection.encrypted) ? "https:" : req.protocol;
+            var _protocol = (req.headers["x-forwarded-proto"]) ? "https:" : req.protocol;
             _protocol = _protocol.split(/\s*,\s*/)[0];
-            console.log(req.headers["x-forwarded-proto"]);
-            console.log(req.connection.encrypted);
             return url.format({
                 protocol: _protocol,
                 host: hostname

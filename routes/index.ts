@@ -23,10 +23,8 @@ export class IndexRoute extends BaseRoute {
 
     private static appSettings(req: Request, res: Response): Object {
         let _fullUrl = (hostname: string): string => {
-            let _protocol = ((req.connection as any).encrypted) ? "https:" : req.protocol;
+            let _protocol = (req.headers["x-forwarded-proto"]) ? "https:" : req.protocol;
             _protocol = _protocol.split(/\s*,\s*/)[0];
-            console.log(req.headers["x-forwarded-proto"]);
-            console.log((req.connection as any).encrypted);
 
             return url.format({
                 protocol: _protocol,
