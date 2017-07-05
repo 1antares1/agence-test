@@ -24,12 +24,12 @@ export class IndexRoute extends BaseRoute {
     private static appSettings(req: Request, res: Response): Object {
         let _fullUrl = (hostname: string): string => {
             let _protocol = ((req.connection as any).encrypted) ? "https:" : req.protocol;
-            // only do this if you trust the proxy
-            _protocol = req.headers["x-forwarded-proto"] as string || _protocol;
             _protocol = _protocol.split(/\s*,\s*/)[0];
+            console.log(req.headers["x-forwarded-proto"]);
+            console.log((req.connection as any).encrypted);
 
             return url.format({
-                protocol: ((req.connection as any).encrypted) ? "https:" : req.protocol,
+                protocol: _protocol,
                 host: hostname
             });
         }
