@@ -24,8 +24,8 @@ var ConsultantRoute = (function (_super) {
     ConsultantRoute.prototype.init = function () {
         this.router.get("/api/consultants/:id", function (req, res, next) {
             if (consultant_collections_1.ConsultantCollections) {
-                new consultant_collections_1.ConsultantCollections().getConsultants(function (result) {
-                    if (result)
+                new consultant_collections_1.ConsultantCollections().getConsultants(function (success, result) {
+                    if (success && result)
                         res.send(result);
                     else
                         res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": result.message || result });
@@ -36,12 +36,12 @@ var ConsultantRoute = (function (_super) {
         this.router.post("/api/consultants/report", function (req, res, next) {
             if (consultant_collections_1.ConsultantCollections) {
                 if (req.params && typeof req.body === "object") {
-                    new consultant_collections_1.ConsultantCollections().getConsultantsReport(req.body, function (result) {
-                        if (result && typeof result !== "string") {
+                    new consultant_collections_1.ConsultantCollections().getConsultantsReport(req.body, function (success, result) {
+                        if (success && result && typeof result !== "string") {
                             res.send(result);
                         }
                         else
-                            res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": result.message || result });
+                            res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": result.message || result.code || result });
                     });
                 }
                 else {

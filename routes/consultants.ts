@@ -28,8 +28,8 @@ export class ConsultantRoute extends IndexRoute {
     init(): void {
         this.router.get("/api/consultants/:id", (req: Request, res: Response, next: NextFunction) => {
             if(ConsultantCollections) {
-                new ConsultantCollections().getConsultants((result: any[]) => {
-                    if(result) res.send(result);
+                new ConsultantCollections().getConsultants((success: boolean, result: any[]) => {
+                    if(success && result) res.send(result);
                     else res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": (result as any).message || result});
                 }, req.params.id);
             }
@@ -39,11 +39,11 @@ export class ConsultantRoute extends IndexRoute {
         this.router.post("/api/consultants/report", (req: Request, res: Response, next: NextFunction) => {
             if(ConsultantCollections) {
                 if(req.params && typeof req.body === "object") {
-                    new ConsultantCollections().getConsultantsReport(req.body as IConsultantParams, (result: any[]) => {
-                        if(result && typeof result !== "string") {
+                    new ConsultantCollections().getConsultantsReport(req.body as IConsultantParams, (success: boolean, result: any[]) => {
+                        if(success && result && typeof result !== "string") {
                             res.send(result)
                         }
-                        else res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": (result as any).message || result});
+                        else res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": (result as any).message || (result as any).code || result});
                     });
                 }
                 else {

@@ -1,62 +1,70 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require("mysql");
+var poolConnection;
+var sqlConnection;
+var schemeOn = false;
 var BaseScheme = (function () {
     function BaseScheme() {
-        this.schemeOn = false;
-        this.connection = mysql.createConnection({
-            host: "br-cdbr-azure-south-b.cloudapp.net",
-            port: 3306,
-            user: "bb1c35f730a5d0",
-            password: "1e4befcb",
-            database: "agencedb"
-        });
+        if (!poolConnection) {
+            schemeOn = false;
+            poolConnection = mysql.createPool({
+                host: "br-cdbr-azure-south-b.cloudapp.net",
+                port: 3306,
+                user: "bb1c35f730a5d0",
+                password: "1e4befcb",
+                database: "agencedb",
+                connectionLimit: 4,
+                waitForConnections: true,
+                queueLimit: 0
+            });
+        }
+        else {
+            schemeOn = true;
+            this.sqlConnection = sqlConnection;
+        }
     }
     BaseScheme.prototype.tryGetSqlConnection = function (callback) {
         var _this = this;
         try {
-            this.connection.connect(function (err) {
+            poolConnection.getConnection(function (err, myConnection) {
                 if (err) {
                     console.error("error connecting: " + err.stack);
-                    _this.schemeOn = false;
+                    schemeOn = false;
                     callback(err, null);
                     return;
                 }
-                _this.schemeOn = true;
-                callback(null, _this.connection);
+                schemeOn = true;
+                sqlConnection = (_this.sqlConnection = myConnection);
+                callback(null, sqlConnection);
             });
         }
         catch (e) {
-            this.schemeOn = false;
+            schemeOn = false;
             callback(null, e);
         }
     };
     ;
     BaseScheme.prototype.tryCloseSqlConnection = function (callback) {
-        var _this = this;
         try {
-            this.connection.connect(function (err) {
-                _this.schemeOn = false;
+            poolConnection.getConnection(function (err, sqlConnection) {
+                schemeOn = false;
                 if (err) {
                     console.error("error ending connection: " + err.stack);
                     callback(false, err);
                     return;
                 }
-                callback(true, _this.connection);
+                callback(true, sqlConnection);
             });
         }
         catch (e) {
-            this.schemeOn = false;
+            schemeOn = false;
             callback(false, e);
         }
     };
     BaseScheme.prototype.releaseConnection = function (connection, ending) {
         if (connection) {
-            connection.end();
-            if (connection.release) {
-                connection.release();
-            }
-            connection.destroy();
+            connection.release();
             if (ending) {
                 this.tryCloseSqlConnection();
             }

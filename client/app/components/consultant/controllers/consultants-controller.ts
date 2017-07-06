@@ -42,6 +42,7 @@
         chartLabels: string[] = [];
         chartSeries: string[] = [];
         chartData: number[][];
+        chartPieData: number[];
         chartDatasetOverride: [{}];
         chartOptions: Object;
 
@@ -109,7 +110,6 @@
                     ]
                 }
             };
-
         }
 
         toggleItem(to: List, item: models.IConsultant) {
@@ -169,14 +169,27 @@
             let _chartInit = (info: models.IPerformanceReport[], clearOnly ? : boolean): void => {
                 $self.chartLabels = new Array();
                 $self.chartData = [[],[]];
+                $self.chartPieData = [];
 
                 if (!clearOnly && info && Object.keys(info)) {
-                    let _fullProfit: number;
+                    let _fullProfit: number = 0;
                     for (let user in info) {
                         if ((info as Object).hasOwnProperty(user) && typeof info[user] === "object" && info[user].months) {
-                            $self.chartLabels.push(info[user].no_usuario);
-                            $self.chartData[0].push(parseInt($self.getBalance("net_amount", info[user].months)));
-                            $self.chartData[1].push(_fullProfit || (_fullProfit = parseInt($self.getBalance("brut_salario", info[user].months))));
+                            $self.chartLabels.push(info[user].co_usuario);
+                            if(type === ActionType.graphic) {
+                                $self.chartData[0].push(parseInt($self.getBalance("net_amount", info[user].months)));
+                                _fullProfit += parseInt($self.getBalance("brut_salario", info[user].months));
+                            }
+                            else if(type === ActionType.cake) {
+                                $self.chartPieData.push(parseInt($self.getBalance("net_amount", info[user].months)));
+                            }
+                        }
+                    }
+
+                    if(type === ActionType.graphic) {
+                        _fullProfit = parseInt((_fullProfit / $self.chartLabels.length).toFixed(2));
+                        for (let i = 0; i < $self.chartData[0].length; i++) {
+                            $self.chartData[1].push(_fullProfit);
                         }
                     }
                 }
@@ -187,7 +200,8 @@
                     _name = "_PerformanceActionReport_";
                     $self.getPerformanceReport();
                     break;
-                case ActionType.graphic:
+                    
+                case ActionType.graphic: 
                     _name = "_PerformanceActionGraphic_";
                     $self.getPerformanceReport((succes: boolean, report: models.IPerformanceReport[]) => {
                         _chartInit(report, !succes);
@@ -195,6 +209,9 @@
                     break;
                 case ActionType.cake:
                     _name = "_PerformanceActionCake_";
+                    $self.getPerformanceReport((succes: boolean, report: models.IPerformanceReport[]) => {
+                        _chartInit(report, !succes);
+                    });
                     break;
             }
             $self.actionName = $self.localize.getLocalizedString(_name);

@@ -68,6 +68,14 @@ var agence;
                         return args[n];
                     });
                 };
+                UtilService.prototype.formatMoney = function (value) {
+                    var formatter = new Intl.NumberFormat("en-US", {
+                        style: "currency",
+                        currency: "BRL",
+                        minimumFractionDigits: 2
+                    });
+                    return formatter.format(value);
+                };
                 UtilService.prototype.stringToDate = function (text) {
                     var _strToNum = Date.parse(text);
                     if (isNaN(_strToNum)) {
@@ -133,9 +141,9 @@ var agence;
                     this.confirmPageExit = value;
                     this.clearPageSesion = value;
                 };
-                UtilService.$inject = ["$templateCache", "$window"];
                 return UtilService;
             }());
+            UtilService.$inject = ["$templateCache", "$window"];
             services.UtilService = UtilService;
             angular.module(agence.appName).service("utilService", UtilService);
         })(services = common.services || (common.services = {}));

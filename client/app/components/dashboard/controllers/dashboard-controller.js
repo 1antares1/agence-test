@@ -34,9 +34,9 @@ var agence;
             };
             DashboardController.prototype.onReadyStateChange = function (isReady, message) {
             };
-            DashboardController.$inject = ["$state", "serviceFacade", "utilService"];
             return DashboardController;
         }(controllers.BaseController));
+        DashboardController.$inject = ["$state", "serviceFacade", "utilService"];
         angular.module(dashboard.moduleName).controller("dashboardController", DashboardController);
     })(dashboard = agence.dashboard || (agence.dashboard = {}));
 })(agence || (agence = {}));

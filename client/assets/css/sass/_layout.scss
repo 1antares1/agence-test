@@ -7,11 +7,6 @@ a:hover {
     text-decoration: underline;
 }
 
-body {
-    font-size: 8pt;
-    font-family: Tahoma;
-}
-
 .nothing {
     width: 1px;
     height: 1px;
@@ -43,12 +38,12 @@ label {
     border-spacing: 0px;
 }
 
-.ag-table td {
+.ag-table {
     font-size: 12px;
     border-bottom: 1px solid gainsboro;
 }
 
-tr:hover td {
+table.ag-table-details tr:hover td {
     background: #feffdc;
 }
 
@@ -117,8 +112,6 @@ td {
 }
 
 BODY {
-    font-size: 8pt;
-    font-family: Tahoma, Verdana, Trebuchet MS, Helvetica, Arial;
     color: #888;
     margin: 0;
 }
@@ -279,7 +272,7 @@ TD.field_name {
 }
 
 .ui-overflowHidden {
-    overflow: hidden;
+    overflow: hidden !important;
 }
 
 .nna-busy-container {
@@ -487,4 +480,18 @@ md-radio-button {
 
 .ag-loading-wrapper-solid {
     opacity: 0.9;
+}
+
+.ag-p-empty {
+    font-size: 14px; 
+    color: gray;
+}
+
+.container.ag-container-ext {
+    width: 100%;
+}
+
+.navbar.navbar-dark .breadcrumb a:hover, .navbar.navbar-dark .navbar-nav .nav-item a:hover,
+.navbar.navbar-dark .breadcrumb a:hover, .navbar.navbar-dark .navbar-nav .nav-item a:focus {
+    color: black;
 }

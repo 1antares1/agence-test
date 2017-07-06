@@ -16,6 +16,7 @@ namespace agence.common.services {
         generateGuid(): string;
         getDeviceName(): Browser | string;
         format(sentence: string, ...args: any[]): string;
+        formatMoney(value: number): string;
         stringToDate(text: string): Date;
         timeToDate(text: string): Date;
         concatDateWithTime(dateValue: Date, timeValue: Date): Date;
@@ -88,6 +89,14 @@ namespace agence.common.services {
                 if (m == "}}") { return "}"; }
                 return args[n];
             });
+        }
+        formatMoney(value: number) {
+            let formatter: Intl.NumberFormat = new Intl.NumberFormat("en-US", {
+                style: "currency",
+                currency: "BRL",
+                minimumFractionDigits: 2
+            });
+            return formatter.format(value);
         }
 
         stringToDate(text: string): Date {

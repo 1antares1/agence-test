@@ -29,17 +29,17 @@ export class ConsultantCollections extends BaseScheme {
         super();
     }
 
-    getConsultants(result: (response: any[]) => void, all ? : boolean): void {
+    getConsultants(result: (success: boolean, response: any[]) => void, all ? : boolean): void {
         let _consultants: IConsultant[] = new Array();
         let _params: IConsultantParams = {
             allConsultants: all
         };
-        this.getDataCollection(CollectionType.consultants, (response: any) => {
-            result(response);
+        this.getDataCollection(CollectionType.consultants, (success: boolean, response: any) => {
+            result(success, response);
         }, _params);
     }
 
-    getConsultantsReport(reportParams: IConsultantParams, result: (response: any) => void): void {
+    getConsultantsReport(reportParams: IConsultantParams, result: (success: boolean, response: any) => void): void {
         let _consultants: IConsultant[] = new Array();
         if (reportParams && typeof reportParams === "object") {
             let _params: IConsultantParams = {
@@ -48,17 +48,17 @@ export class ConsultantCollections extends BaseScheme {
                 userList: (reportParams.userList) ? reportParams.userList.replace(/,/g, "|") : ""
             };
 
-            this.getDataCollection(CollectionType.report, (response: any) => {
-                result(response);
+            this.getDataCollection(CollectionType.report, (success: boolean, response: any) => {
+                result(success, response);
             }, _params);
         } else {
-            result("An error has occurred validating the body model");
+            result(false, "An error has occurred validating the body model");
         }
     }
 
-    private getDataCollection(collectionType: CollectionType, result: (response: any) => void, params ? : IConsultantParams): void {
-        let _data = (type: CollectionType, connection ? : mysql.IConnection) => {
-            let _sqlConnection: mysql.IConnection = connection || this.connection;
+    private getDataCollection(collectionType: CollectionType, result: (success: boolean, response: any) => void, params ? : IConsultantParams): void {
+        let _data = (type: CollectionType, connection: mysql.IConnection) => {
+            let _sqlConnection: mysql.IConnection = connection || this.sqlConnection;
 
             switch (type) {
                 case CollectionType.consultant:
@@ -67,19 +67,17 @@ export class ConsultantCollections extends BaseScheme {
                 case CollectionType.consultants:
                     _sqlConnection.query(`CALL usp_getConsultants(${(params.allConsultants) ? 1 : 0})`, (error: mysql.IError, results: any) => {
                         if (error) {
-                            result(error);
+                            result(false, error);
                         } else {
-                            result(results[0]);
+                            result(true, results[0]);
                         }
-                    }).on("end", () => {
-                        super.releaseConnection(_sqlConnection);
                     });
                     break;
 
                 case CollectionType.report:
                     _sqlConnection.query(`CALL usp_getConsultantsReport('${params.fromDate}', '${params.toDate}', '${params.userList}')`, (error: mysql.IError, results: any) => {
                         if (error) {
-                            result(error);
+                            result(false, error);
                         } else {
                             let _collection: IConsultantReport[] = results[0],
                                 _users: any = {},
@@ -114,27 +112,25 @@ export class ConsultantCollections extends BaseScheme {
                                     }
                                 });
                             }
-                            result(_users);
+                            result(true, _users);
                         }
-                    }).on("end", () => {
-                        super.releaseConnection(_sqlConnection);
                     });
                     break;
 
                 default:
-                    result(null);
+                    result(false, null);
                     break;
             }
         }
 
-        if (this.schemeOn) {
-            _data(collectionType);
+        if (this.sqlConnection) {
+            _data(collectionType, this.sqlConnection);
         } else {
             this.tryGetSqlConnection((err: mysql.IError, connection: mysql.IConnection) => {
                 if (!err) {
-                    _data(collectionType);
+                    _data(collectionType, connection);
                 } else {
-                    result(err);
+                    result(false, err);
                 }
             });
         }

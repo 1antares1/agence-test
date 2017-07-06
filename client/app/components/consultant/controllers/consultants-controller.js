@@ -130,13 +130,25 @@ var agence;
                 var _chartInit = function (info, clearOnly) {
                     $self.chartLabels = new Array();
                     $self.chartData = [[], []];
+                    $self.chartPieData = [];
                     if (!clearOnly && info && Object.keys(info)) {
-                        var _fullProfit = void 0;
+                        var _fullProfit = 0;
                         for (var user in info) {
                             if (info.hasOwnProperty(user) && typeof info[user] === "object" && info[user].months) {
-                                $self.chartLabels.push(info[user].no_usuario);
-                                $self.chartData[0].push(parseInt($self.getBalance("net_amount", info[user].months)));
-                                $self.chartData[1].push(_fullProfit || (_fullProfit = parseInt($self.getBalance("brut_salario", info[user].months))));
+                                $self.chartLabels.push(info[user].co_usuario);
+                                if (type === ActionType.graphic) {
+                                    $self.chartData[0].push(parseInt($self.getBalance("net_amount", info[user].months)));
+                                    _fullProfit += parseInt($self.getBalance("brut_salario", info[user].months));
+                                }
+                                else if (type === ActionType.cake) {
+                                    $self.chartPieData.push(parseInt($self.getBalance("net_amount", info[user].months)));
+                                }
+                            }
+                        }
+                        if (type === ActionType.graphic) {
+                            _fullProfit = parseInt((_fullProfit / $self.chartLabels.length).toFixed(2));
+                            for (var i = 0; i < $self.chartData[0].length; i++) {
+                                $self.chartData[1].push(_fullProfit);
                             }
                         }
                     }
@@ -154,6 +166,9 @@ var agence;
                         break;
                     case ActionType.cake:
                         _name = "_PerformanceActionCake_";
+                        $self.getPerformanceReport(function (succes, report) {
+                            _chartInit(report, !succes);
+                        });
                         break;
                 }
                 $self.actionName = $self.localize.getLocalizedString(_name);
@@ -217,11 +232,11 @@ var agence;
                     angular.element('.dataTables_processing').hide();
                 };
             };
-            ConsultantsController.$inject = [
-                "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
-            ];
             return ConsultantsController;
         }());
+        ConsultantsController.$inject = [
+            "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
+        ];
         consultant.ConsultantsController = ConsultantsController;
         angular.module(consultant.moduleName).controller("consultantsController", ConsultantsController);
     })(consultant = agence.consultant || (agence.consultant = {}));

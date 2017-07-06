@@ -34,15 +34,23 @@
     "angular-ui-router": "~0.3.1",
     "animate.css": "~3.5.2",
     "bluebird": "~3.4.7",
+    "bootstrap": "~3.3.7",
     "datatables": "~1.10.12",
     "font-awesome": "~4.5.0",
     "lodash": "~4.16.6",
     "moment": "~2.12.0",
     "toastr": "~2.1.0",
-    "angular-chart.js": "^1.1.1",
-    "chart.js": "^2.6.0"
+    "angular-chart.js": "~1.1.1",
+    "chart.js": "^2.6.0",
+    "MDBootstrap": "^4.3.2"
   },
   "overrides": {
+    "bootstrap": {
+      "main": [
+        "dist/js/bootstrap.min.js",
+        "dist/css/bootstrap.min.css"
+      ]
+    },
     "font-awesome": {
       "main": [
         "css/font-awesome.css"
@@ -58,6 +66,7 @@
   "resolutions": {
     "angular": ">=1.2.18",
     "sinon": "~2.3.6",
-    "jquery": "~3.2.1"
+    "jquery": "~3.2.1",
+    "bootstrap": "3.3.7"
   }
 }

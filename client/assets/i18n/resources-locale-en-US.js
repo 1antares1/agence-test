@@ -34,6 +34,11 @@
         "description": "Application"
     },
     {
+        "key": "_PerfomanceNoAction_",
+        "value": "Você deve adicionar consultores para o painel esquerdo",
+        "description": "Application"
+    },
+    {
         "key": "_SystemMessageNoData_",
         "value": "Não existem dados disponíveis",
         "description": "Application"

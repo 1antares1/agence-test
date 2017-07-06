@@ -27,8 +27,8 @@ var ConsultantCollections = (function (_super) {
         var _params = {
             allConsultants: all
         };
-        this.getDataCollection(CollectionType.consultants, function (response) {
-            result(response);
+        this.getDataCollection(CollectionType.consultants, function (success, response) {
+            result(success, response);
         }, _params);
     };
     ConsultantCollections.prototype.getConsultantsReport = function (reportParams, result) {
@@ -39,37 +39,35 @@ var ConsultantCollections = (function (_super) {
                 toDate: reportParams.toDate,
                 userList: (reportParams.userList) ? reportParams.userList.replace(/,/g, "|") : ""
             };
-            this.getDataCollection(CollectionType.report, function (response) {
-                result(response);
+            this.getDataCollection(CollectionType.report, function (success, response) {
+                result(success, response);
             }, _params);
         }
         else {
-            result("An error has occurred validating the body model");
+            result(false, "An error has occurred validating the body model");
         }
     };
     ConsultantCollections.prototype.getDataCollection = function (collectionType, result, params) {
         var _this = this;
         var _data = function (type, connection) {
-            var _sqlConnection = connection || _this.connection;
+            var _sqlConnection = connection || _this.sqlConnection;
             switch (type) {
                 case CollectionType.consultant:
                     break;
                 case CollectionType.consultants:
                     _sqlConnection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
                         if (error) {
-                            result(error);
+                            result(false, error);
                         }
                         else {
-                            result(results[0]);
+                            result(true, results[0]);
                         }
-                    }).on("end", function () {
-                        _super.prototype.releaseConnection.call(_this, _sqlConnection);
                     });
                     break;
                 case CollectionType.report:
                     _sqlConnection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
                         if (error) {
-                            result(error);
+                            result(false, error);
                         }
                         else {
                             var _collection = results[0], _users = {}, _months = [];
@@ -100,27 +98,25 @@ var ConsultantCollections = (function (_super) {
                                     }
                                 });
                             }
-                            result(_users);
+                            result(true, _users);
                         }
-                    }).on("end", function () {
-                        _super.prototype.releaseConnection.call(_this, _sqlConnection);
                     });
                     break;
                 default:
-                    result(null);
+                    result(false, null);
                     break;
             }
         };
-        if (this.schemeOn) {
-            _data(collectionType);
+        if (this.sqlConnection) {
+            _data(collectionType, this.sqlConnection);
         }
         else {
             this.tryGetSqlConnection(function (err, connection) {
                 if (!err) {
-                    _data(collectionType);
+                    _data(collectionType, connection);
                 }
                 else {
-                    result(err);
+                    result(false, err);
                 }
             });
         }
