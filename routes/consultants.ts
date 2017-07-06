@@ -30,7 +30,7 @@ export class ConsultantRoute extends IndexRoute {
             if(ConsultantCollections) {
                 new ConsultantCollections().getConsultants((result: any[]) => {
                     if(result) res.send(result);
-                    else res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": result});
+                    else res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": (result as any).message || result});
                 }, req.params.id);
             }
         });
@@ -43,7 +43,7 @@ export class ConsultantRoute extends IndexRoute {
                         if(result && typeof result !== "string") {
                             res.send(result)
                         }
-                        else res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": result});
+                        else res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": (result as any).message || result});
                     });
                 }
                 else {

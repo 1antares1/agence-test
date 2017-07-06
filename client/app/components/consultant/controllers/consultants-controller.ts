@@ -4,7 +4,7 @@
     import models = agence.common.models;
     import controllers = agence.common.controllers;
     declare var _: any;
-    
+
     let $self: ConsultantsController;
 
     enum List {
@@ -39,6 +39,11 @@
         typeReports: models.ITuple[];
         actionName: string;
         consultantAction: number;
+        chartLabels: string[] = [];
+        chartSeries: string[] = [];
+        chartData: number[][];
+        chartDatasetOverride: [{}];
+        chartOptions: Object;
 
         // logical variables
         baseRoute: string = "app.consultant";
@@ -81,6 +86,30 @@
                     text: "Pizza"
                 }
             ];
+            $self.chartSeries = ["Receita", "Custo Fixo"];
+            $self.chartDatasetOverride = [{
+                yAxisID: 'y-axis-1'
+            }, {
+                yAxisID: 'y-axis-2'
+            }];
+            $self.chartOptions = {
+                scales: {
+                    yAxes: [{
+                            id: 'y-axis-1',
+                            type: 'linear',
+                            display: true,
+                            position: 'left'
+                        },
+                        {
+                            id: 'y-axis-2',
+                            type: 'linear',
+                            display: true,
+                            position: 'right'
+                        }
+                    ]
+                }
+            };
+
         }
 
         toggleItem(to: List, item: models.IConsultant) {
@@ -119,7 +148,7 @@
 
         refresh() {
             let $self = this;
-            $self.$scope.performance.onReadyStateChange(false, "Loading...");
+            $self.$scope.performance.onReadyStateChange(false, "Carregando...");
             $self.serviceFacade.consultant.getConsultantResource(true).query((consultants: models.IConsultant[]) => {
                 $self.originalModels = consultants;
                 $self.fromUsers = angular.copy($self.originalModels);
@@ -127,6 +156,7 @@
                 $self.$scope.performance.loadDependencyData();
 
             }, (reason: any) => {
+                $self.$scope.performance.onProcessing(false);
                 $self.$scope.performance.onFailed(reason);
             });
         }
@@ -136,6 +166,21 @@
             let _name: string;
             $self.consultantAction = type;
             $self.userAmounts = null;
+            let _chartInit = (info: models.IPerformanceReport[], clearOnly ? : boolean): void => {
+                $self.chartLabels = new Array();
+                $self.chartData = [[],[]];
+
+                if (!clearOnly && info && Object.keys(info)) {
+                    let _fullProfit: number;
+                    for (let user in info) {
+                        if ((info as Object).hasOwnProperty(user) && typeof info[user] === "object" && info[user].months) {
+                            $self.chartLabels.push(info[user].no_usuario);
+                            $self.chartData[0].push(parseInt($self.getBalance("net_amount", info[user].months)));
+                            $self.chartData[1].push(_fullProfit || (_fullProfit = parseInt($self.getBalance("brut_salario", info[user].months))));
+                        }
+                    }
+                }
+            };
 
             switch (type) {
                 case ActionType.report:
@@ -144,6 +189,9 @@
                     break;
                 case ActionType.graphic:
                     _name = "_PerformanceActionGraphic_";
+                    $self.getPerformanceReport((succes: boolean, report: models.IPerformanceReport[]) => {
+                        _chartInit(report, !succes);
+                    });
                     break;
                 case ActionType.cake:
                     _name = "_PerformanceActionCake_";
@@ -152,8 +200,9 @@
             $self.actionName = $self.localize.getLocalizedString(_name);
         }
 
-        getPerformanceReport(): void {
+        getPerformanceReport(callbackResult ? : (succes: boolean, report: models.IPerformanceReport[]) => void): void {
             $self = this;
+
             $self.$scope.performance.loading = true;
             $self.$scope.performance.onReadyStateChange(false, "Carregando...");
             if ($self.toUsers && $self.toUsers.length) {
@@ -166,10 +215,15 @@
                     toDate: ($self.toSubmissionDate) ? moment($self.toSubmissionDate).format("YYYY-MM-DD") : moment(new Date()).format("YYYY-MM-DD"),
                     userList: _userList.join("|")
                 }), (consultantReport: models.IPerformanceReport[]) => {
+
                     $self.userAmounts = (Object.keys(consultantReport).length && Object.keys(consultantReport).length > 2) ? consultantReport : null;
+                    if (callbackResult) callbackResult(true, consultantReport);
                     $self.$scope.performance.onProcessing(false);
+
                 }, (reason: any) => {
                     $self.userAmounts = null;
+                    if (callbackResult) callbackResult(false, null);
+                    $self.$scope.performance.onProcessing(false);
                     $self.$scope.performance.onFailed(reason);
                 });
             }
@@ -186,9 +240,9 @@
             $self = this;
             let _balance: number = 0;
 
-            if(data && data.length) {
-                for(let i = 0; i < data.length; i++) {
-                    if(!(data[i].information as any)[key]) {
+            if (data && data.length) {
+                for (let i = 0; i < data.length; i++) {
+                    if (!(data[i].information as any)[key]) {
                         break;
                     }
                     _balance += (data[i].information as any)[key] || 0;

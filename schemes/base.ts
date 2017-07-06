@@ -10,7 +10,7 @@ export default class BaseScheme {
             port: 3306,
             user: "bb1c35f730a5d0",
             password: "1e4befcb",
-            database: "agencedb",
+            database: "agencedb"
         });
     }
 
@@ -51,6 +51,10 @@ export default class BaseScheme {
 
     releaseConnection(connection: mysql.IConnection, ending?: boolean): void {
         if(connection) {
+            connection.end();
+            if(connection.release) {
+                connection.release();
+            }
             connection.destroy();
             if(ending) {
                 this.tryCloseSqlConnection();

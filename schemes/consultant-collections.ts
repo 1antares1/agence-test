@@ -67,7 +67,7 @@ export class ConsultantCollections extends BaseScheme {
                 case CollectionType.consultants:
                     _sqlConnection.query(`CALL usp_getConsultants(${(params.allConsultants) ? 1 : 0})`, (error: mysql.IError, results: any) => {
                         if (error) {
-                            result(error.message);
+                            result(error);
                         } else {
                             result(results[0]);
                         }
@@ -79,7 +79,7 @@ export class ConsultantCollections extends BaseScheme {
                 case CollectionType.report:
                     _sqlConnection.query(`CALL usp_getConsultantsReport('${params.fromDate}', '${params.toDate}', '${params.userList}')`, (error: mysql.IError, results: any) => {
                         if (error) {
-                            result(error.message);
+                            result(error);
                         } else {
                             let _collection: IConsultantReport[] = results[0],
                                 _users: any = {},
@@ -134,7 +134,7 @@ export class ConsultantCollections extends BaseScheme {
                 if (!err) {
                     _data(collectionType);
                 } else {
-                    result(null);
+                    result(err);
                 }
             });
         }

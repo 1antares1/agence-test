@@ -57,7 +57,7 @@ var ConsultantCollections = (function (_super) {
                 case CollectionType.consultants:
                     _sqlConnection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
                         if (error) {
-                            result(error.message);
+                            result(error);
                         }
                         else {
                             result(results[0]);
@@ -69,7 +69,7 @@ var ConsultantCollections = (function (_super) {
                 case CollectionType.report:
                     _sqlConnection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
                         if (error) {
-                            result(error.message);
+                            result(error);
                         }
                         else {
                             var _collection = results[0], _users = {}, _months = [];
@@ -120,7 +120,7 @@ var ConsultantCollections = (function (_super) {
                     _data(collectionType);
                 }
                 else {
-                    result(null);
+                    result(err);
                 }
             });
         }

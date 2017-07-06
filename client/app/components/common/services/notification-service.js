@@ -23,9 +23,9 @@ var agence;
                 NotificationService.prototype.warning = function (message, title) {
                     this.toaster.pop('warning', "", message);
                 };
+                NotificationService.$inject = ["toaster"];
                 return NotificationService;
             }());
-            NotificationService.$inject = ["toaster"];
             services.NotificationService = NotificationService;
             angular.module(agence.appName).service("notificationService", NotificationService);
         })(services = common.services || (common.services = {}));

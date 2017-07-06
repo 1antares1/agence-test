@@ -9,7 +9,7 @@ var BaseScheme = (function () {
             port: 3306,
             user: "bb1c35f730a5d0",
             password: "1e4befcb",
-            database: "agencedb",
+            database: "agencedb"
         });
     }
     BaseScheme.prototype.tryGetSqlConnection = function (callback) {
@@ -52,6 +52,10 @@ var BaseScheme = (function () {
     };
     BaseScheme.prototype.releaseConnection = function (connection, ending) {
         if (connection) {
+            connection.end();
+            if (connection.release) {
+                connection.release();
+            }
             connection.destroy();
             if (ending) {
                 this.tryCloseSqlConnection();

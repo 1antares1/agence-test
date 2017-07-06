@@ -90,7 +90,8 @@
         <md-content class="ag-md-content-sm ag-margin-t-10 ag-margin-b-10 ag-flex-horizontal-center" flex layout-padding>
             <md-radio-group ng-model="vmn.radioGroup1">
                 <md-radio-button class="md-primary ag-md-label-14" ng-repeat="item in vmn.typeReports" value="{{item.value}}" ng-click="vmn.executeReport(item.value)">
-                    <i class="fa" ng-class="{'fa-file-text': item.value === 0, 'fa-area-chart': item.value === 1, 'fa-pie-chart': item.value === 2}" aria-hidden="true">&nbsp;&nbsp;</i>{{item.text}}
+                    <i class="fa" ng-class="{'fa-file-text': item.value === 0, 'fa-area-chart': item.value === 1, 'fa-pie-chart': item.value === 2}"
+                        aria-hidden="true">&nbsp;&nbsp;</i>{{item.text}}
                 </md-radio-button>
             </md-radio-group>
         </md-content>
@@ -106,9 +107,10 @@
         </div>
     </md-toolbar>
 
-    <md-content flex layout-padding>
-        <table cellspacing="1" cellpadding="3" width="100%" bgcolor="#cccccc" id="pesquisaAvancada" ng-repeat="user in vmn.userAmounts" ng-if="vmn.userAmounts">
-            <tbody>
+    <md-content flex layout-padding class="ag-margin-b-10">
+        <table class="ag-margin-b-10 ag-table" cellspacing="2" cellpadding="3" width="100%" bgcolor="#cccccc" id="pesquisaAvancada"
+            ng-repeat="user in vmn.userAmounts">
+            <thead>
                 <tr bgcolor="#efefef">
                     <td colspan="5"><span class="style3 ag-md-label-14">{{user.no_usuario}}</span></td>
                 </tr>
@@ -129,6 +131,8 @@
                         <div align="center"><strong>Lucro</strong></div>
                     </td>
                 </tr>
+            </thead>
+            <tbody>
                 <tr bgcolor="#fafafa" ng-repeat="data in user.months">
                     <td nowrap="">{{vmn.getMonthName(data.month)}} de {{data.year}}</td>
                     <td>
@@ -164,13 +168,18 @@
                         </div>
                     </td>
                     <td>
-                    <div align="right">
-                        <font color="#0000FF" class="ag-md-label-14 ag-md-bold">{{vmn.getBalance("profit", user.months) | currency}}</font>
-                    </div>
+                        <div align="right">
+                            <font color="#0000FF" class="ag-md-label-14 ag-md-bold">{{vmn.getBalance("profit", user.months) | currency}}</font>
+                        </div>
                     </td>
                 </tr>
             </tbody>
         </table>
+        <div layout-gt-sm="row" layout="column" layout-align="center center" ng-cloak>
+            <div flex-gt-sm="50" flex>
+                <canvas id="chartbar" class="chart chart-bar" chart-data="vmn.chartData" chart-labels="vmn.chartLabels" chart-series="vmn.chartSeries" chart-options="vmn.chartOptions"></canvas>
+            </div>
+        </div>
         <h4 ng-if="!vmn.userAmounts" i18n="_SystemMessageNoData_"></h4>
     </md-content>
 

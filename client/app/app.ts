@@ -2,7 +2,7 @@
     export const appName: string = "agenceapp";
     let _dependencies: string[] = [
         // angular modules
-        "ui.router", "ngMaterial", "ngResource", "ngAnimate", "ngSanitize", "angular-loading-bar", "datatables"
+        "ui.router", "ngMaterial", "ngResource", "ngAnimate", "ngSanitize", "angular-loading-bar", "datatables", "chart.js"
         // agence components
         , "agence-common", "agence-dashboard", "agence-performance", "agence-consultant"
     ];

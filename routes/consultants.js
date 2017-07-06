@@ -28,7 +28,7 @@ var ConsultantRoute = (function (_super) {
                     if (result)
                         res.send(result);
                     else
-                        res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": result });
+                        res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": result.message || result });
                 }, req.params.id);
             }
         });
@@ -41,7 +41,7 @@ var ConsultantRoute = (function (_super) {
                             res.send(result);
                         }
                         else
-                            res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": result });
+                            res.status(404).send({ "error": "A problem has occurred with the consultants report.", "stack": result.message || result });
                     });
                 }
                 else {

@@ -25,6 +25,8 @@ var agence;
                 this.DTColumnBuilder = DTColumnBuilder;
                 this.$compile = $compile;
                 this.$scope = $scope;
+                this.chartLabels = [];
+                this.chartSeries = [];
                 this.baseRoute = "app.consultant";
                 this.dtInstance = {};
                 this.init();
@@ -51,6 +53,29 @@ var agence;
                         text: "Pizza"
                     }
                 ];
+                $self.chartSeries = ["Receita", "Custo Fixo"];
+                $self.chartDatasetOverride = [{
+                        yAxisID: 'y-axis-1'
+                    }, {
+                        yAxisID: 'y-axis-2'
+                    }];
+                $self.chartOptions = {
+                    scales: {
+                        yAxes: [{
+                                id: 'y-axis-1',
+                                type: 'linear',
+                                display: true,
+                                position: 'left'
+                            },
+                            {
+                                id: 'y-axis-2',
+                                type: 'linear',
+                                display: true,
+                                position: 'right'
+                            }
+                        ]
+                    }
+                };
             };
             ConsultantsController.prototype.toggleItem = function (to, item) {
                 $self = this;
@@ -86,13 +111,14 @@ var agence;
             };
             ConsultantsController.prototype.refresh = function () {
                 var $self = this;
-                $self.$scope.performance.onReadyStateChange(false, "Loading...");
+                $self.$scope.performance.onReadyStateChange(false, "Carregando...");
                 $self.serviceFacade.consultant.getConsultantResource(true).query(function (consultants) {
                     $self.originalModels = consultants;
                     $self.fromUsers = angular.copy($self.originalModels);
                     $self.$scope.performance.onProcessing(false);
                     $self.$scope.performance.loadDependencyData();
                 }, function (reason) {
+                    $self.$scope.performance.onProcessing(false);
                     $self.$scope.performance.onFailed(reason);
                 });
             };
@@ -101,6 +127,20 @@ var agence;
                 var _name;
                 $self.consultantAction = type;
                 $self.userAmounts = null;
+                var _chartInit = function (info, clearOnly) {
+                    $self.chartLabels = new Array();
+                    $self.chartData = [[], []];
+                    if (!clearOnly && info && Object.keys(info)) {
+                        var _fullProfit = void 0;
+                        for (var user in info) {
+                            if (info.hasOwnProperty(user) && typeof info[user] === "object" && info[user].months) {
+                                $self.chartLabels.push(info[user].no_usuario);
+                                $self.chartData[0].push(parseInt($self.getBalance("net_amount", info[user].months)));
+                                $self.chartData[1].push(_fullProfit || (_fullProfit = parseInt($self.getBalance("brut_salario", info[user].months))));
+                            }
+                        }
+                    }
+                };
                 switch (type) {
                     case ActionType.report:
                         _name = "_PerformanceActionReport_";
@@ -108,6 +148,9 @@ var agence;
                         break;
                     case ActionType.graphic:
                         _name = "_PerformanceActionGraphic_";
+                        $self.getPerformanceReport(function (succes, report) {
+                            _chartInit(report, !succes);
+                        });
                         break;
                     case ActionType.cake:
                         _name = "_PerformanceActionCake_";
@@ -115,7 +158,7 @@ var agence;
                 }
                 $self.actionName = $self.localize.getLocalizedString(_name);
             };
-            ConsultantsController.prototype.getPerformanceReport = function () {
+            ConsultantsController.prototype.getPerformanceReport = function (callbackResult) {
                 $self = this;
                 $self.$scope.performance.loading = true;
                 $self.$scope.performance.onReadyStateChange(false, "Carregando...");
@@ -129,9 +172,14 @@ var agence;
                         userList: _userList.join("|")
                     }), function (consultantReport) {
                         $self.userAmounts = (Object.keys(consultantReport).length && Object.keys(consultantReport).length > 2) ? consultantReport : null;
+                        if (callbackResult)
+                            callbackResult(true, consultantReport);
                         $self.$scope.performance.onProcessing(false);
                     }, function (reason) {
                         $self.userAmounts = null;
+                        if (callbackResult)
+                            callbackResult(false, null);
+                        $self.$scope.performance.onProcessing(false);
                         $self.$scope.performance.onFailed(reason);
                     });
                 }
@@ -169,11 +217,11 @@ var agence;
                     angular.element('.dataTables_processing').hide();
                 };
             };
+            ConsultantsController.$inject = [
+                "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
+            ];
             return ConsultantsController;
         }());
-        ConsultantsController.$inject = [
-            "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
-        ];
         consultant.ConsultantsController = ConsultantsController;
         angular.module(consultant.moduleName).controller("consultantsController", ConsultantsController);
     })(consultant = agence.consultant || (agence.consultant = {}));

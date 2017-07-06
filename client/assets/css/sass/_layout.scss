@@ -33,6 +33,25 @@ center {
     text-align: 0;
 }
 
+label {
+    font-size: 16px;
+    font-weight: 600;
+    color: black;
+}
+
+.ag-table {
+    border-spacing: 0px;
+}
+
+.ag-table td {
+    font-size: 12px;
+    border-bottom: 1px solid gainsboro;
+}
+
+tr:hover td {
+    background: #feffdc;
+}
+
 .tab {
     background-color: olive;
     color: #FFF;
@@ -283,6 +302,10 @@ TD.field_name {
     margin-top: 10px !important;
 }
 
+.ag-margin-b-10 {
+    margin-bottom: 10px !important;
+}
+
 md-content.ag-md-content-sm {
     height: 300px;
 }
@@ -386,4 +409,82 @@ md-radio-button {
 
 .ag-high {
     color: #0756a2;
+}
+
+.spinner-background-2 {
+    display: inline;
+    position: absolute;
+    top: 50%;
+    text-align: justify;
+    text-align-last: center;
+    z-index: 99999999;
+}
+
+.spinner-background-2>div {
+    width: 18px;
+    height: 18px;
+    background-color: #333;
+    border-radius: 100%;
+    display: inline-block;
+    -webkit-animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+    animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.spinner-background-2 .bounce1 {
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+
+.spinner-background-2 .bounce2 {
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+
+.nna-left-50 {
+    left: 50%;
+}
+
+@-webkit-keyframes sk-bouncedelay {
+    0%,
+    80%,
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+@keyframes sk-bouncedelay {
+    0%,
+    80%,
+    100% {
+        -webkit-transform: scale(0);
+        transform: scale(0);
+    }
+    40% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+}
+
+.ag-loading-wrapper,
+.ag-loading-wrapper-solid {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    background-color: white;
+    opacity: 0.7;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+}
+
+.ag-loading-wrapper-solid {
+    opacity: 0.9;
 }
