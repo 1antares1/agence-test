@@ -60,12 +60,12 @@ export class ConsultantCollections extends BaseScheme {
         let _data = (type: CollectionType, connection: mysql.IConnection) => {
             let _sqlConnection: mysql.IConnection = connection || this.sqlConnection;
             let _callbackError = (err: mysql.IError, callback: (success: boolean, response: any) => void): void => {
-                if(err || err.fatal) {
+                if(err.fatal) {
                     this.tryGetSqlConnection((reason: mysql.IError, connection: mysql.IConnection) => {
                         this.getDataCollection(collectionType, result, params);
                     });
                 }
-                else {
+                else if(err) {
                     result(false, err);
                 }
             };

@@ -52,12 +52,12 @@ var ConsultantCollections = (function (_super) {
         var _data = function (type, connection) {
             var _sqlConnection = connection || _this.sqlConnection;
             var _callbackError = function (err, callback) {
-                if (err || err.fatal) {
+                if (err.fatal) {
                     _this.tryGetSqlConnection(function (reason, connection) {
                         _this.getDataCollection(collectionType, result, params);
                     });
                 }
-                else {
+                else if (err) {
                     result(false, err);
                 }
             };
