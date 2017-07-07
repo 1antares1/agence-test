@@ -23,11 +23,7 @@ let handleDisconnect = (callback ? : (err: mysql.IError) => void): void => {
 
         sqlConnection.on("error", (err: mysql.IError) => {
             console.log("db error: ", err);
-            if (err.code === "PROTOCOL_CONNECTION_LOST") {
-                handleDisconnect();
-            } else {
-                throw err;
-            }
+            handleDisconnect();
         });
     } catch (e) {
         if (callback) callback(e);
