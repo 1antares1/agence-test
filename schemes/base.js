@@ -3,64 +3,57 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require("mysql");
 var poolConnection;
 var sqlConnection;
-var schemeOn = false;
-var getConnection = function () {
-    schemeOn = false;
+var sqlConfig = {
+    host: "br-cdbr-azure-south-b.cloudapp.net",
+    port: 3306,
+    user: "bb1c35f730a5d0",
+    password: "1e4befcb",
+    database: "agencedb"
+};
+var handleDisconnect = function (callback) {
     try {
-        sqlConnection = mysql.createConnection({
-            host: "br-cdbr-azure-south-b.cloudapp.net",
-            port: 3306,
-            user: "bb1c35f730a5d0",
-            password: "1e4befcb",
-            database: "agencedb",
-            connectTimeout: 10000
+        sqlConnection = mysql.createConnection(sqlConfig);
+        sqlConnection.connect(function (err) {
+            if (err) {
+                console.log("error when connecting to db: ", err);
+                setTimeout(handleDisconnect, 1000);
+            }
         });
-        sqlConnection.on("error", function (response) {
-            getConnection();
+        sqlConnection.on("error", function (err) {
+            console.log("db error: ", err);
+            if (err.code === "PROTOCOL_CONNECTION_LOST") {
+                handleDisconnect();
+            }
+            else {
+                throw err;
+            }
         });
-        sqlConnection.on("uncaughtException", function (response) {
-            getConnection();
-        });
-        return sqlConnection;
     }
     catch (e) {
-        console.log(e);
+        if (callback)
+            callback(e);
     }
 };
-getConnection();
+handleDisconnect();
 var BaseScheme = (function () {
     function BaseScheme() {
-        if (sqlConnection) {
-            schemeOn = true;
-            this.sqlConnection = sqlConnection;
-        }
     }
     BaseScheme.prototype.tryCreateSqlConnection = function () {
-        return getConnection();
+        handleDisconnect();
+        return this.sqlConnection = sqlConnection;
     };
     BaseScheme.prototype.tryGetSqlConnection = function (callback) {
         var _this = this;
         var _callbackSuccess = function (connect) {
-            schemeOn = true;
             sqlConnection = (_this.sqlConnection = connect);
             callback(null, sqlConnection);
         };
         try {
-            sqlConnection.connect(function (err, args) {
-                if (err) {
-                    console.error("error connecting: " + err.stack);
-                    schemeOn = false;
-                    getConnection();
-                    callback(err, null);
-                    return;
-                }
+            if (sqlConnection) {
                 _callbackSuccess(sqlConnection);
-            });
+            }
         }
         catch (e) {
-            schemeOn = false;
-            poolConnection = null;
-            getConnection();
             callback(e, null);
         }
     };
@@ -77,7 +70,6 @@ var BaseScheme = (function () {
             });
         }
         catch (e) {
-            schemeOn = false;
             callback(false, e);
         }
     };
