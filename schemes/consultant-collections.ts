@@ -59,6 +59,16 @@ export class ConsultantCollections extends BaseScheme {
     private getDataCollection(collectionType: CollectionType, result: (success: boolean, response: any) => void, params ? : IConsultantParams): void {
         let _data = (type: CollectionType, connection: mysql.IConnection) => {
             let _sqlConnection: mysql.IConnection = connection || this.sqlConnection;
+            let _callbackError = (err: mysql.IError, callback: (success: boolean, response: any) => void): void => {
+                if(err || err.fatal) {
+                    this.tryGetSqlConnection((reason: mysql.IError, connection: mysql.IConnection) => {
+                        this.getDataCollection(collectionType, result, params);
+                    });
+                }
+                else {
+                    result(false, err);
+                }
+            };
 
             switch (type) {
                 case CollectionType.consultant:
@@ -67,7 +77,7 @@ export class ConsultantCollections extends BaseScheme {
                 case CollectionType.consultants:
                     _sqlConnection.query(`CALL usp_getConsultants(${(params.allConsultants) ? 1 : 0})`, (error: mysql.IError, results: any) => {
                         if (error) {
-                            result(false, error);
+                            _callbackError(error, result);
                         } else {
                             result(true, results[0]);
                         }
@@ -77,7 +87,7 @@ export class ConsultantCollections extends BaseScheme {
                 case CollectionType.report:
                     _sqlConnection.query(`CALL usp_getConsultantsReport('${params.fromDate}', '${params.toDate}', '${params.userList}')`, (error: mysql.IError, results: any) => {
                         if (error) {
-                            result(false, error);
+                            _callbackError(error, result);
                         } else {
                             let _collection: IConsultantReport[] = results[0],
                                 _users: any = {},

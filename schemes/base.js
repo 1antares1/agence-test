@@ -48,7 +48,6 @@ var BaseScheme = (function () {
     BaseScheme.prototype.tryCloseSqlConnection = function (callback) {
         try {
             poolConnection.getConnection(function (err, sqlConnection) {
-                schemeOn = false;
                 if (err) {
                     console.error("error ending connection: " + err.stack);
                     callback(false, err);

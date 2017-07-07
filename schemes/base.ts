@@ -49,7 +49,6 @@ export default class BaseScheme {
     tryCloseSqlConnection(callback?: (success: boolean, result: any) => void): void {
         try {
             poolConnection.getConnection((err: mysql.IError, sqlConnection: mysql.IConnection) => {
-                schemeOn = false;
                 if (err) {
                     console.error("error ending connection: " + err.stack);
                     callback(false, err);

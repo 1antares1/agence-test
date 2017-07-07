@@ -51,13 +51,23 @@ var ConsultantCollections = (function (_super) {
         var _this = this;
         var _data = function (type, connection) {
             var _sqlConnection = connection || _this.sqlConnection;
+            var _callbackError = function (err, callback) {
+                if (err || err.fatal) {
+                    _this.tryGetSqlConnection(function (reason, connection) {
+                        _this.getDataCollection(collectionType, result, params);
+                    });
+                }
+                else {
+                    result(false, err);
+                }
+            };
             switch (type) {
                 case CollectionType.consultant:
                     break;
                 case CollectionType.consultants:
                     _sqlConnection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
                         if (error) {
-                            result(false, error);
+                            _callbackError(error, result);
                         }
                         else {
                             result(true, results[0]);
@@ -67,7 +77,7 @@ var ConsultantCollections = (function (_super) {
                 case CollectionType.report:
                     _sqlConnection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
                         if (error) {
-                            result(false, error);
+                            _callbackError(error, result);
                         }
                         else {
                             var _collection = results[0], _users = {}, _months = [];
