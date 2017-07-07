@@ -7,7 +7,8 @@ let sqlConfig: mysql.IConnectionConfig = {
     port: 3306,
     user: "bb1c35f730a5d0",
     password: "1e4befcb",
-    database: "agencedb"
+    database: "agencedb",
+    connectTimeout: 20000
 };
 
 let handleDisconnect = (callback ? : (err: mysql.IError) => void): void => {
