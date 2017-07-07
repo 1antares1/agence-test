@@ -148,7 +148,7 @@ var agence;
                                         $self.notification(common.APIMessageType.failed, response.data.stack, $self.messageTitle);
                                     }
                                     if (response.status || response.statusText) {
-                                        $self.notification(common.APIMessageType.failed, (response.status || response.statusText), $self.messageTitle);
+                                        $self.notification(common.APIMessageType.failed, (response.statusText || response.status), $self.messageTitle);
                                     }
                                 }
                             }
