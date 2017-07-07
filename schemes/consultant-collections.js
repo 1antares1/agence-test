@@ -118,7 +118,18 @@ var ConsultantCollections = (function (_super) {
             }
         };
         if (this.sqlConnection) {
-            _data(collectionType, this.sqlConnection);
+            this.sqlConnection.ping(function (err) {
+                var _callbackRunCommand = function () {
+                    _data(collectionType, _this.sqlConnection);
+                };
+                if (err) {
+                    _this.sqlConnection = _this.tryCreateSqlConnection();
+                    _data(collectionType, _this.sqlConnection);
+                }
+                else {
+                    _callbackRunCommand();
+                }
+            });
         }
         else {
             this.tryGetSqlConnection(function (err, connection) {

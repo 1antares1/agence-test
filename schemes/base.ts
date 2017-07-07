@@ -4,51 +4,76 @@ let poolConnection: mysql.IPool;
 let sqlConnection: mysql.IConnection;
 let schemeOn: boolean = false;
 
+ let getConnection = (): mysql.IConnection => {
+    schemeOn = false;
+    try {
+        sqlConnection = mysql.createConnection({
+            host: "br-cdbr-azure-south-b.cloudapp.net",
+            port: 3306,
+            user: "bb1c35f730a5d0",
+            password: "1e4befcb",
+            database: "agencedb",
+            connectTimeout: 10000
+        });
+        
+        sqlConnection.on("error", (response: any) => {
+            getConnection();
+        });
+
+        sqlConnection.on("uncaughtException", (response: any) => {
+            getConnection();
+        });
+        return sqlConnection;
+    } catch(e) {
+        console.log(e);
+    }
+}
+
+getConnection();
+
 export default class BaseScheme {
     sqlConnection: mysql.IConnection;
 
     constructor() {
-        if(!poolConnection) {
-            schemeOn = false;
-            poolConnection = mysql.createPool({
-                host: "br-cdbr-azure-south-b.cloudapp.net",
-                port: 3306,
-                user: "bb1c35f730a5d0",
-                password: "1e4befcb",
-                database: "agencedb",
-                connectionLimit: 4,
-                waitForConnections: true,
-                queueLimit: 0
-            });
-        }
-        else {
+        if(sqlConnection) {
             schemeOn = true;
             this.sqlConnection = sqlConnection;
         }
+     }
+
+    tryCreateSqlConnection(): mysql.IConnection {
+        return getConnection();
     }
 
     tryGetSqlConnection(callback: (reason: mysql.IError, connection: mysql.IConnection) => void): void {
+        let _callbackSuccess = (connect: mysql.IConnection): void => {
+            schemeOn = true;
+            sqlConnection = (this.sqlConnection = connect);
+            callback(null, sqlConnection);
+        };
+
         try {
-            poolConnection.getConnection((err: mysql.IError, myConnection: mysql.IConnection) => {
+            sqlConnection.connect((err: mysql.IError, args: any[]) => {
                 if (err) {
                     console.error("error connecting: " + err.stack);
                     schemeOn = false;
+                    getConnection();
                     callback(err, null);
                     return;
                 }
-                schemeOn = true;
-                sqlConnection = (this.sqlConnection = myConnection);
-                callback(null, sqlConnection);
+                _callbackSuccess(sqlConnection);
             });
         } catch (e) {
             schemeOn = false;
-            callback(null, e);
+            poolConnection = null;
+            getConnection();
+            callback(e, null);
         }
     };
 
     tryCloseSqlConnection(callback?: (success: boolean, result: any) => void): void {
         try {
-            poolConnection.getConnection((err: mysql.IError, sqlConnection: mysql.IConnection) => {
+            sqlConnection.connect((err: mysql.IError) => {
                 if (err) {
                     console.error("error ending connection: " + err.stack);
                     callback(false, err);
