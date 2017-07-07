@@ -197,6 +197,9 @@ module agence.common.controllers {
                             if(typeof response.data.stack === "string") {
                                 $self.notification(common.APIMessageType.failed, response.data.stack, $self.messageTitle);
                             }
+                            if(response.status || response.statusText) {
+                                $self.notification(common.APIMessageType.failed, (response.status || response.statusText), $self.messageTitle);
+                            }
                         }
                     }
                 }
