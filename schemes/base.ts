@@ -8,7 +8,7 @@ let sqlConfig: mysql.IConnectionConfig = {
     user: "bb1c35f730a5d0",
     password: "1e4befcb",
     database: "agencedb",
-    connectTimeout: 20000
+    connectTimeout: 25000
 };
 
 let handleDisconnect = (callback ? : (err: mysql.IError) => void): void => {
