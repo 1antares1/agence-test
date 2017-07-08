@@ -56,12 +56,10 @@ export class IndexRoute extends BaseRoute {
 
         router.get(path, (req: Request, res: Response, next: NextFunction) => {
             switch (path) {
-                case "/":
+                case "/api/settings":
                     APIdatabase.handleDatabase((err: any) => {
                         console.log(err);
                     });
-                    break;
-                case "/api/settings":
                     options = IndexRoute.appSettings(req, res);
                     break;
             }
