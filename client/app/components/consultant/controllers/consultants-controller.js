@@ -232,11 +232,11 @@ var agence;
                     angular.element('.dataTables_processing').hide();
                 };
             };
-            ConsultantsController.$inject = [
-                "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
-            ];
             return ConsultantsController;
         }());
+        ConsultantsController.$inject = [
+            "$state", "$stateParams", "serviceFacade", "utilService", "localize", "DTOptionsBuilder", "DTColumnBuilder", "$compile", "$scope"
+        ];
         consultant.ConsultantsController = ConsultantsController;
         angular.module(consultant.moduleName).controller("consultantsController", ConsultantsController);
     })(consultant = agence.consultant || (agence.consultant = {}));
