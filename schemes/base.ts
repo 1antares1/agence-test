@@ -3,10 +3,10 @@ import * as mysql from "mysql";
 let poolConnection: mysql.IPool;
 let sqlConnection: mysql.IConnection;
 let sqlConfig: mysql.IConnectionConfig = {
-    host: "35.192.51.41",
+    host: "br-cdbr-azure-south-b.cloudapp.net",
     port: 3306,
-    user: "root",
-    password: "_4dm1nPa$$w0rd-",
+    user: "bb1c35f730a5d0",
+    password: "1e4befcb",
     database: "agencedb",
     connectTimeout: 25000
 };

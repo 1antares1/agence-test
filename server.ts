@@ -17,24 +17,24 @@ import { IndexRoute } from "./routes/index";
 import { ConsultantRoute } from "./routes/consultants";
 
 const { URL } = require("url");
-let requestOptions = {
-    proxy: process.env.QUOTAGUARDSTATIC_URL,
-    url: "https://agence-test-k.herokuapp.com/",
-    headers: {
-        "User-Agent": "node.js"
-    }
-};
+// let requestOptions = {
+//     proxy: process.env.QUOTAGUARDSTATIC_URL,
+//     url: "https://agence-test-k.herokuapp.com/",
+//     headers: {
+//         "User-Agent": "node.js"
+//     }
+// };
 
-let callback = (error: any, response: request.RequestResponse, body: Body): void => {
-    if (!error && response.statusCode == 200) {
-        console.log(body);
-    }
-    else {
-        console.log(error);
-    }
-}
+// let callback = (error: any, response: request.RequestResponse, body: Body): void => {
+//     if (!error && response.statusCode == 200) {
+//         console.log(body);
+//     }
+//     else {
+//         console.log(error);
+//     }
+// }
 
-request(requestOptions, callback);
+// request(requestOptions, callback);
 
 /**
  * The server.
