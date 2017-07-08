@@ -9,33 +9,36 @@ var sqlConfig = {
     user: "bb1c35f730a5d0",
     password: "1e4befcb",
     database: "agencedb",
-    connectTimeout: 25000
+    connectTimeout: 25000,
+    debug: false
 };
-var handleDisconnect = function (callback) {
+function handleDatabase(callback) {
     try {
-        sqlConnection = mysql.createConnection(sqlConfig);
-        sqlConnection.connect(function (err) {
-            if (err) {
-                console.log("error when connecting to db: ", err);
-                setTimeout(handleDisconnect, 1000);
+        poolConnection = mysql.createPool(sqlConfig);
+        poolConnection.getConnection(function (err, connection) {
+            if (err && callback) {
+                callback({ "error": err.message, "stack": err.stack });
+                return;
             }
-        });
-        sqlConnection.on("error", function (err) {
-            console.log("db error: ", err);
-            handleDisconnect();
+            sqlConnection = connection;
+            console.log("connected as id " + connection.threadId);
+            connection.on("error", function (err) {
+                if (callback)
+                    callback({ "error": err.message, "stack": err.stack });
+                return;
+            });
         });
     }
     catch (e) {
         if (callback)
             callback(e);
     }
-};
-handleDisconnect();
+}
+exports.handleDatabase = handleDatabase;
 var BaseScheme = (function () {
     function BaseScheme() {
     }
     BaseScheme.prototype.tryCreateSqlConnection = function () {
-        handleDisconnect();
         return this.sqlConnection = sqlConnection;
     };
     BaseScheme.prototype.tryGetSqlConnection = function (callback) {

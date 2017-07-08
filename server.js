@@ -9,6 +9,7 @@ var cookieParser = require("cookie-parser");
 var bodyParser = require("body-parser");
 var errorHandler = require("errorhandler");
 var methodOverride = require("method-override");
+var APIdatabase = require("./schemes/base");
 var route_1 = require("./routes/route");
 var index_1 = require("./routes/index");
 var consultants_1 = require("./routes/consultants");
@@ -25,6 +26,9 @@ var Server = (function () {
     };
     Server.prototype.api = function (app, router) {
         new consultants_1.ConsultantRoute(app, router);
+        APIdatabase.handleDatabase(function (err) {
+            onError(err);
+        });
     };
     Server.prototype.config = function () {
         var app = this.app;

@@ -39,6 +39,8 @@ var IndexRoute = (function (_super) {
         console.log("[IndexRoute::create] Creating" + _target + "route: '" + path + "')");
         router.get(path, function (req, res, next) {
             switch (path) {
+                case "/":
+                    break;
                 case "/api/settings":
                     options = IndexRoute.appSettings(req, res);
                     break;

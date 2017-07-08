@@ -8,6 +8,8 @@ import {
     BaseRoute,
     RenderType
 } from "./route";
+import * as APIdatabase from "../schemes/base"
+
 const url = require("url");
 
 /**
@@ -54,6 +56,11 @@ export class IndexRoute extends BaseRoute {
 
         router.get(path, (req: Request, res: Response, next: NextFunction) => {
             switch (path) {
+                case "/":
+                    // APIdatabase.handleDatabase((err: any) => {
+                    //     console.log(err);
+                    // });
+                    break;
                 case "/api/settings":
                     options = IndexRoute.appSettings(req, res);
                     break;
