@@ -3,6 +3,7 @@
 // module dependencies
 import * as debug from "debug";
 import * as express from "express";
+import * as request from "request";
 import * as path from "path";
 import * as favicon from "serve-favicon";
 import * as logger from "morgan";
@@ -16,6 +17,24 @@ import { IndexRoute } from "./routes/index";
 import { ConsultantRoute } from "./routes/consultants";
 
 const { URL } = require("url");
+let requestOptions = {
+    proxy: process.env.QUOTAGUARDSTATIC_URL,
+    url: "https://agence-test-k.herokuapp.com/",
+    headers: {
+        "User-Agent": "node.js"
+    }
+};
+
+let callback = (error: any, response: request.RequestResponse, body: Body): void => {
+    if (!error && response.statusCode == 200) {
+        console.log(body);
+    }
+    else {
+        console.log(error);
+    }
+}
+
+request(requestOptions, callback);
 
 /**
  * The server.

@@ -2,6 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var debug = require("debug");
 var express = require("express");
+var request = require("request");
 var path = require("path");
 var favicon = require("serve-favicon");
 var logger = require("morgan");
@@ -13,6 +14,19 @@ var route_1 = require("./routes/route");
 var index_1 = require("./routes/index");
 var consultants_1 = require("./routes/consultants");
 var URL = require("url").URL;
+var requestOptions = {
+    proxy: process.env.QUOTAGUARDSTATIC_URL,
+    url: "https://agence-test-k.herokuapp.com/",
+    headers: {
+        "User-Agent": "node.js"
+    }
+};
+var callback = function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+        console.log(body);
+    }
+};
+request(requestOptions, callback);
 var Server = (function () {
     function Server() {
         this.express = express();
