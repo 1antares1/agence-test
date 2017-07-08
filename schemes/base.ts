@@ -2,43 +2,43 @@ import * as mysql from "mysql";
 
 let poolConnection: mysql.IPool;
 let sqlConnection: mysql.IConnection;
-let sqlConfig: mysql.IConnectionConfig = {
+let sqlConfig: mysql.IPoolConfig = {
     host: "br-cdbr-azure-south-b.cloudapp.net",
     port: 3306,
     user: "bb1c35f730a5d0",
     password: "1e4befcb",
     database: "agencedb",
-    connectTimeout: 25000
+    connectTimeout: 25000,
+    debug: false
 };
 
-let handleDisconnect = (callback ? : (err: mysql.IError) => void): void => {
+export function handleDatabase(callback ? : (err: any) => void): void {
     try {
-        sqlConnection = mysql.createConnection(sqlConfig);
-        sqlConnection.connect((err: mysql.IError) => {
-            if (err) {
-                console.log("error when connecting to db: ", err);
-                setTimeout(handleDisconnect, 1000);
+        poolConnection = mysql.createPool(sqlConfig);
+        poolConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
+            if (err && callback) {
+                callback({"error": err.message, "stack": err.stack });
+                return;
             }
-        }); 
+            sqlConnection = connection;
+            console.log("connected as id " + connection.threadId);
 
-        sqlConnection.on("error", (err: mysql.IError) => {
-            console.log("db error: ", err);
-            handleDisconnect();
+            connection.on("error", (err) => {
+                if (callback) callback({"error": err.message, "stack": err.stack });
+                return;
+            });
         });
     } catch (e) {
         if (callback) callback(e);
     }
 }
 
-handleDisconnect();
-
 export default class BaseScheme {
     sqlConnection: mysql.IConnection;
 
-    constructor() { }
+    constructor() {}
 
     tryCreateSqlConnection(): mysql.IConnection {
-        handleDisconnect();
         return this.sqlConnection = sqlConnection;
     }
 

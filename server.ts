@@ -12,29 +12,12 @@ import * as bodyParser from "body-parser";
 import errorHandler = require("errorhandler");
 import methodOverride = require("method-override");
 
+import * as APIdatabase from "./schemes/base"
 import { RenderType } from "./routes/route";
 import { IndexRoute } from "./routes/index";
 import { ConsultantRoute } from "./routes/consultants";
 
 const { URL } = require("url");
-// let requestOptions = {
-//     proxy: process.env.QUOTAGUARDSTATIC_URL,
-//     url: "https://agence-test-k.herokuapp.com/",
-//     headers: {
-//         "User-Agent": "node.js"
-//     }
-// };
-
-// let callback = (error: any, response: request.RequestResponse, body: Body): void => {
-//     if (!error && response.statusCode == 200) {
-//         console.log(body);
-//     }
-//     else {
-//         console.log(error);
-//     }
-// }
-
-// request(requestOptions, callback);
 
 /**
  * The server.
@@ -70,6 +53,9 @@ export class Server {
 
     public api(app: express.Express, router: express.Router) {
         new ConsultantRoute(app, router);
+        APIdatabase.handleDatabase((err: any) => {
+            onError(err);
+        });
     }
 
     public config() {
