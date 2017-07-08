@@ -11,6 +11,7 @@ var __extends = (this && this.__extends) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 var route_1 = require("./route");
+var APIdatabase = require("../schemes/base");
 var url = require("url");
 var IndexRoute = (function (_super) {
     __extends(IndexRoute, _super);
@@ -40,6 +41,9 @@ var IndexRoute = (function (_super) {
         router.get(path, function (req, res, next) {
             switch (path) {
                 case "/":
+                    APIdatabase.handleDatabase(function (err) {
+                        console.log(err);
+                    });
                     break;
                 case "/api/settings":
                     options = IndexRoute.appSettings(req, res);

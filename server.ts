@@ -12,7 +12,6 @@ import * as bodyParser from "body-parser";
 import errorHandler = require("errorhandler");
 import methodOverride = require("method-override");
 
-import * as APIdatabase from "./schemes/base"
 import { RenderType } from "./routes/route";
 import { IndexRoute } from "./routes/index";
 import { ConsultantRoute } from "./routes/consultants";
@@ -53,9 +52,6 @@ export class Server {
 
     public api(app: express.Express, router: express.Router) {
         new ConsultantRoute(app, router);
-        APIdatabase.handleDatabase((err: any) => {
-            onError(err);
-        });
     }
 
     public config() {
