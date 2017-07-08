@@ -4,10 +4,10 @@ var mysql = require("mysql");
 var poolConnection;
 var sqlConnection;
 var sqlConfig = {
-    host: "35.192.51.41",
+    host: "br-cdbr-azure-south-b.cloudapp.net",
     port: 3306,
-    user: "root",
-    password: "_4dm1nPa$$w0rd-",
+    user: "bb1c35f730a5d0",
+    password: "1e4befcb",
     database: "agencedb",
     connectTimeout: 25000
 };
