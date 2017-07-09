@@ -45,6 +45,7 @@
         chartPieData: number[];
         chartDatasetOverride: [{}];
         chartOptions: Object;
+        totalResults: number;
 
         // logical variables
         baseRoute: string = "app.consultant";
@@ -234,6 +235,7 @@
                 }), (consultantReport: models.IPerformanceReport[]) => {
 
                     $self.userAmounts = (Object.keys(consultantReport).length && Object.keys(consultantReport).length > 2) ? consultantReport : null;
+                    $self.totalResults = ($self.userAmounts) ? (Object.keys(consultantReport).length - 2) : null;
                     if (callbackResult) callbackResult(true, consultantReport);
                     $self.$scope.performance.onProcessing(false);
 

@@ -53,19 +53,33 @@ var ConsultantCollections = (function (_super) {
             var _sqlConnection = connection || _this.sqlConnection;
             var _callbackError = function (err, callback) {
                 if (err.fatal) {
-                    _this.tryGetSqlConnection(function (reason, connection) {
-                        _this.getDataCollection(collectionType, result, params);
+                    _this.tryGetSqlConnection(true, function (reason, connection) {
+                        if (reason) {
+                            result(false, reason);
+                        }
+                        else {
+                            _this.getDataCollection(collectionType, result, params);
+                        }
                     });
                 }
                 else if (err) {
                     result(false, err);
                 }
             };
+            var _commandPrepare = function (ready) {
+                _sqlConnection.getConnection(function (err, connection) {
+                    if (err)
+                        _callbackError(err, result);
+                    else {
+                        ready(connection);
+                    }
+                });
+            };
             switch (type) {
                 case CollectionType.consultant:
                     break;
                 case CollectionType.consultants:
-                    _sqlConnection.getConnection(function (err, connection) {
+                    _commandPrepare(function (connection) {
                         connection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
                             connection.release();
                             if (error) {
@@ -78,7 +92,7 @@ var ConsultantCollections = (function (_super) {
                     });
                     break;
                 case CollectionType.report:
-                    _sqlConnection.getConnection(function (err, connection) {
+                    _commandPrepare(function (connection) {
                         connection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
                             connection.release();
                             if (error) {
@@ -123,7 +137,7 @@ var ConsultantCollections = (function (_super) {
                     break;
             }
         };
-        this.tryGetSqlConnection(function (err, connection) {
+        this.tryGetSqlConnection(false, function (err, connection) {
             if (!err) {
                 _data(collectionType, connection);
             }

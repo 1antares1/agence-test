@@ -187,6 +187,7 @@ var agence;
                         userList: _userList.join("|")
                     }), function (consultantReport) {
                         $self.userAmounts = (Object.keys(consultantReport).length && Object.keys(consultantReport).length > 2) ? consultantReport : null;
+                        $self.totalResults = ($self.userAmounts) ? (Object.keys(consultantReport).length - 2) : null;
                         if (callbackResult)
                             callbackResult(true, consultantReport);
                         $self.$scope.performance.onProcessing(false);

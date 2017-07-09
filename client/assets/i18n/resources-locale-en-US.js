@@ -39,6 +39,11 @@
         "description": "Application"
     },
     {
+        "key": "_ConsultantsTotal_",
+        "value": "Total results:",
+        "description": "Application"
+    },
+    {
         "key": "_SystemMessageNoData_",
         "value": "Não existem dados disponíveis",
         "description": "Application"

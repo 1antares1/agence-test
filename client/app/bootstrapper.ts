@@ -54,6 +54,7 @@
             this.add("app.consultant", "^/consultant/:id", "consultant/views/consultant-details.html", "consultantDetailsController");
 
             // customer routes
+            //this.add("app.consultants", "^/customers", "customer/views/customers.html", "customersController");
 
             /*
             // Instruction Sheet Routes

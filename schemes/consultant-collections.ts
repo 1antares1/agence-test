@@ -62,20 +62,33 @@ export class ConsultantCollections extends BaseScheme {
             let _sqlConnection: mysql.IPool = connection || this.sqlConnection;
             let _callbackError = (err: mysql.IError, callback: (success: boolean, response: any) => void): void => {
                 if (err.fatal) {
-                    this.tryGetSqlConnection((reason: mysql.IError, connection: mysql.IPool) => {
-                        this.getDataCollection(collectionType, result, params);
+                    this.tryGetSqlConnection(true, (reason: mysql.IError, connection: mysql.IPool) => {
+                        if(reason) {
+                            result(false, reason);
+                        }
+                        else {
+                            this.getDataCollection(collectionType, result, params);
+                        }
                     });
                 } else if (err) {
                     result(false, err);
                 }
             };
+            let _commandPrepare = (ready: (connection: mysql.IConnection) => void): void => {
+                _sqlConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
+                    if (err) _callbackError(err, result);
+                    else {
+                        ready(connection);
+                    }
+                });
+            }
 
             switch (type) {
                 case CollectionType.consultant:
                     break;
 
                 case CollectionType.consultants:
-                    _sqlConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
+                    _commandPrepare((connection: mysql.IConnection) => {
                         connection.query(`CALL usp_getConsultants(${(params.allConsultants) ? 1 : 0})`, (error: mysql.IError, results: any) => {
                             connection.release();
 
@@ -89,10 +102,10 @@ export class ConsultantCollections extends BaseScheme {
                     break;
 
                 case CollectionType.report:
-                    _sqlConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
+                    _commandPrepare((connection: mysql.IConnection) => {
                         connection.query(`CALL usp_getConsultantsReport('${params.fromDate}', '${params.toDate}', '${params.userList}')`, (error: mysql.IError, results: any) => {
                             connection.release();
-                            
+
                             if (error) {
                                 _callbackError(error, result);
                             } else {
@@ -135,12 +148,13 @@ export class ConsultantCollections extends BaseScheme {
                     });
                     break;
 
-                default: result(false, null);
+                default:
+                    result(false, null);
                     break;
             }
         }
 
-        this.tryGetSqlConnection((err: mysql.IError, connection: mysql.IPool) => {
+        this.tryGetSqlConnection(false, (err: mysql.IError, connection: mysql.IPool) => {
             if (!err) {
                 _data(collectionType, connection);
             } else {

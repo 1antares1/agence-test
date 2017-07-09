@@ -16,11 +16,9 @@ function handleDatabase(callback) {
     try {
         poolConnection = mysql.createPool(sqlConfig);
         poolConnection.getConnection(function (err, connection) {
-            if (err && callback) {
-                callback({
-                    "error": err.message,
-                    "stack": err.stack
-                }, null);
+            if (err) {
+                if (callback)
+                    callback({ "error": err.message, "stack": err.stack }, null);
                 return;
             }
             console.log("connected as id " + connection.threadId);
@@ -49,23 +47,24 @@ var BaseScheme = (function () {
     BaseScheme.prototype.tryCreateSqlConnection = function () {
         return this.sqlConnection = poolConnection;
     };
-    BaseScheme.prototype.tryGetSqlConnection = function (callback) {
+    BaseScheme.prototype.tryGetSqlConnection = function (init, callback) {
         var _this = this;
         var _callbackSuccess = function (connect) {
             poolConnection = (_this.sqlConnection = connect);
             callback(null, poolConnection);
         };
         try {
-            if (poolConnection) {
-                _callbackSuccess(poolConnection);
-            }
-            else {
+            if (init) {
                 handleDatabase(function (err, poolConnect) {
                     if (err) {
-                        throw err;
+                        callback(err, null);
+                        return;
                     }
                     _callbackSuccess(poolConnect);
                 });
+            }
+            else {
+                _callbackSuccess(poolConnection);
             }
         }
         catch (e) {

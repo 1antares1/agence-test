@@ -487,6 +487,11 @@ md-radio-button {
     color: gray;
 }
 
+.ag-text-right {
+    position: absolute;
+    right: 2%;
+}
+
 .container.ag-container-ext {
     width: 100%;
 }
@@ -494,4 +499,16 @@ md-radio-button {
 .navbar.navbar-dark .breadcrumb a:hover, .navbar.navbar-dark .navbar-nav .nav-item a:hover,
 .navbar.navbar-dark .breadcrumb a:hover, .navbar.navbar-dark .navbar-nav .nav-item a:focus {
     color: black;
+}
+
+@media screen and (max-width: 480px) {
+    h2 {
+        font-size: 14px !important;
+    }
+    .ag-td-text {
+      font-size: 10px;
+    }
+    .ag-md-label-14 {
+      font-size: 10px;
+    }
 }

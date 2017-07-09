@@ -105,6 +105,7 @@
     <md-toolbar class="md-accent">
         <div class="md-toolbar-tools">
             <h2 class="md-flex">{{vmn.actionName}}</h2>
+            <h2 class="ag-text-right" i18n="_ConsultantsTotal_|prepend">&nbsp;<strong>{{vmn.totalResults || 0}}</strong></h2>
         </div>
     </md-toolbar>
 
@@ -136,18 +137,18 @@
             </thead>
             <tbody>
                 <tr bgcolor="#fafafa" ng-repeat="data in user.months">
-                    <td nowrap="">{{vmn.getMonthName(data.month)}} de {{data.year}}</td>
+                    <td class="ag-td-text" nowrap="">{{vmn.getMonthName(data.month)}} de {{data.year}}</td>
                     <td>
-                        <div align="right">{{data.information.net_amount | currency}}</div>
+                        <div class="ag-td-text" align="right">{{data.information.net_amount | currency}}</div>
                     </td>
                     <td>
-                        <div align="right">{{data.information.brut_salario | currency}}</div>
+                        <div class="ag-td-text" align="right">{{data.information.brut_salario | currency}}</div>
                     </td>
                     <td>
-                        <div align="right">{{data.information.commission | currency}}</div>
+                        <div class="ag-td-text" align="right">{{data.information.commission | currency}}</div>
                     </td>
                     <td>
-                        <div align="right">
+                        <div class="ag-td-text" align="right">
                             <font ng-class="{ 'ag-low': data.information.profit < 0 }">{{data.information.profit | currency}}</font>
                         </div>
                     </td>
@@ -184,7 +185,7 @@
         </div>
         <div layout-gt-xs="row" layout="column" layout-align="center center" ng-if="vmn.consultantAction === 2" ng-cloak>
             <div flex-gt-xs="30">
-                <canvas id="chartbar" class="chart chart-pie chart-xs" chart-data="vmn.chartPieData" chart-labels="vmn.chartLabels"></canvas>
+                <canvas id="chartcake" class="chart chart-pie chart-xs" chart-data="vmn.chartPieData" chart-labels="vmn.chartLabels"></canvas>
             </div>
         </div>
     </md-content>

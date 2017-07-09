@@ -16,11 +16,8 @@ export function handleDatabase(callback ? : (err: any, poolConnect: mysql.IPool)
     try {
         poolConnection = mysql.createPool(sqlConfig);
         poolConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
-            if (err && callback) {
-                callback({
-                    "error": err.message,
-                    "stack": err.stack
-                }, null);
+            if (err) {
+                if(callback) callback({"error": err.message, "stack": err.stack}, null);
                 return;
             }
             console.log("connected as id " + connection.threadId);
@@ -50,23 +47,26 @@ export default class BaseScheme {
         return this.sqlConnection = poolConnection;
     }
 
-    tryGetSqlConnection(callback: (reason: mysql.IError, poolConnect: mysql.IPool) => void): void {
+    tryGetSqlConnection(init: boolean, callback: (reason: mysql.IError, poolConnect: mysql.IPool) => void): void {
         let _callbackSuccess = (connect: mysql.IPool): void => {
             poolConnection = (this.sqlConnection = connect);
             callback(null, poolConnection);
         };
 
         try {
-            if (poolConnection) {
-                _callbackSuccess(poolConnection);
-            } else {
+            if(init) {
                 handleDatabase((err: any, poolConnect: mysql.IPool) => {
                     if (err) {
-                        throw err;
+                        callback(err, null);
+                        return;
                     }
                     _callbackSuccess(poolConnect);
                 });
             }
+            else {
+                 _callbackSuccess(poolConnection);
+            }
+
         } catch (e) {
             callback(e, null);
         }
