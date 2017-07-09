@@ -91,6 +91,8 @@ export class ConsultantCollections extends BaseScheme {
                 case CollectionType.report:
                     _sqlConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
                         connection.query(`CALL usp_getConsultantsReport('${params.fromDate}', '${params.toDate}', '${params.userList}')`, (error: mysql.IError, results: any) => {
+                            connection.release();
+                            
                             if (error) {
                                 _callbackError(error, result);
                             } else {

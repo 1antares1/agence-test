@@ -80,6 +80,7 @@ var ConsultantCollections = (function (_super) {
                 case CollectionType.report:
                     _sqlConnection.getConnection(function (err, connection) {
                         connection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
+                            connection.release();
                             if (error) {
                                 _callbackError(error, result);
                             }

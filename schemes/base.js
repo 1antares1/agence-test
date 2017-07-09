@@ -9,7 +9,8 @@ var sqlConfig = {
     password: "1e4befcb",
     database: "agencedb",
     connectTimeout: 25000,
-    debug: false
+    waitForConnections: true,
+    connectionLimit: 4
 };
 function handleDatabase(callback) {
     try {

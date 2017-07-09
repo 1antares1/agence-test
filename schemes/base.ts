@@ -8,7 +8,8 @@ let sqlConfig: mysql.IPoolConfig = {
     password: "1e4befcb",
     database: "agencedb",
     connectTimeout: 25000,
-    debug: false
+    waitForConnections: true,
+    connectionLimit: 4
 };
 
 export function handleDatabase(callback ? : (err: any, poolConnect: mysql.IPool) => void): void {
