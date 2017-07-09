@@ -13,16 +13,16 @@ var agence;
                     this.lifeCycle = lifeCycle;
                     this.branding = branding;
                 }
+                ServiceFacade.$inject = [
+                    "consultantDataService",
+                    "notificationService",
+                    "utilService",
+                    "appSettings",
+                    "lifeCycle",
+                    "branding"
+                ];
                 return ServiceFacade;
             }());
-            ServiceFacade.$inject = [
-                "consultantDataService",
-                "notificationService",
-                "utilService",
-                "appSettings",
-                "lifeCycle",
-                "branding"
-            ];
             services.ServiceFacade = ServiceFacade;
             angular.module(agence.appName).service("serviceFacade", ServiceFacade);
         })(services = common.services || (common.services = {}));

@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mysql = require("mysql");
 var poolConnection;
-var sqlConnection;
 var sqlConfig = {
     host: "br-cdbr-azure-south-b.cloudapp.net",
     port: 3306,
@@ -17,39 +16,55 @@ function handleDatabase(callback) {
         poolConnection = mysql.createPool(sqlConfig);
         poolConnection.getConnection(function (err, connection) {
             if (err && callback) {
-                callback({ "error": err.message, "stack": err.stack });
+                callback({
+                    "error": err.message,
+                    "stack": err.stack
+                }, null);
                 return;
             }
-            sqlConnection = connection;
             console.log("connected as id " + connection.threadId);
             connection.on("error", function (err) {
                 if (callback)
-                    callback({ "error": err.message, "stack": err.stack });
+                    callback({
+                        "error": err.message,
+                        "stack": err.stack
+                    }, null);
                 return;
             });
+            if (callback)
+                callback(null, poolConnection);
         });
     }
     catch (e) {
         if (callback)
-            callback(e);
+            callback(e, null);
     }
 }
 exports.handleDatabase = handleDatabase;
+handleDatabase();
 var BaseScheme = (function () {
     function BaseScheme() {
     }
     BaseScheme.prototype.tryCreateSqlConnection = function () {
-        return this.sqlConnection = sqlConnection;
+        return this.sqlConnection = poolConnection;
     };
     BaseScheme.prototype.tryGetSqlConnection = function (callback) {
         var _this = this;
         var _callbackSuccess = function (connect) {
-            sqlConnection = (_this.sqlConnection = connect);
-            callback(null, sqlConnection);
+            poolConnection = (_this.sqlConnection = connect);
+            callback(null, poolConnection);
         };
         try {
-            if (sqlConnection) {
-                _callbackSuccess(sqlConnection);
+            if (poolConnection) {
+                _callbackSuccess(poolConnection);
+            }
+            else {
+                handleDatabase(function (err, poolConnect) {
+                    if (err) {
+                        throw err;
+                    }
+                    _callbackSuccess(poolConnect);
+                });
             }
         }
         catch (e) {
@@ -59,25 +74,12 @@ var BaseScheme = (function () {
     ;
     BaseScheme.prototype.tryCloseSqlConnection = function (callback) {
         try {
-            sqlConnection.connect(function (err) {
-                if (err) {
-                    console.error("error ending connection: " + err.stack);
-                    callback(false, err);
-                    return;
-                }
-                callback(true, sqlConnection);
+            poolConnection.end(function (err) {
+                (err) ? callback(false, err) : callback(true, null);
             });
         }
         catch (e) {
             callback(false, e);
-        }
-    };
-    BaseScheme.prototype.releaseConnection = function (connection, ending) {
-        if (connection) {
-            connection.release();
-            if (ending) {
-                this.tryCloseSqlConnection();
-            }
         }
     };
     return BaseScheme;

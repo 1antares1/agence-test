@@ -65,51 +65,56 @@ var ConsultantCollections = (function (_super) {
                 case CollectionType.consultant:
                     break;
                 case CollectionType.consultants:
-                    _sqlConnection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
-                        if (error) {
-                            _callbackError(error, result);
-                        }
-                        else {
-                            result(true, results[0]);
-                        }
+                    _sqlConnection.getConnection(function (err, connection) {
+                        connection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
+                            connection.release();
+                            if (error) {
+                                _callbackError(error, result);
+                            }
+                            else {
+                                result(true, results[0]);
+                            }
+                        });
                     });
                     break;
                 case CollectionType.report:
-                    _sqlConnection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
-                        if (error) {
-                            _callbackError(error, result);
-                        }
-                        else {
-                            var _collection = results[0], _users = {}, _months = [];
-                            for (var i = 0; i < _collection.length; i++) {
-                                var _co_usuario = _collection[i].co_usuario;
-                                var _userMonths = (_users[_co_usuario]) ? _users[_co_usuario].months : new Array();
-                                _users[_co_usuario] = {
-                                    co_os: _collection[i].co_os,
-                                    co_status: _collection[i].co_status,
-                                    co_cliente: _collection[i].co_cliente,
-                                    co_usuario: _collection[i].co_usuario,
-                                    no_usuario: _collection[i].no_usuario,
-                                    no_email: _collection[i].no_email,
-                                    nu_telefone: _collection[i].nu_telefone,
-                                    url_foto: _collection[i].url_foto,
-                                    months: _userMonths
-                                };
-                                _users[_co_usuario].months.push({
-                                    year: _collection[i].data_year,
-                                    month: _collection[i].data_month,
-                                    information: {
-                                        valor: _collection[i].valor,
-                                        total: _collection[i].total,
-                                        net_amount: _collection[i].net_amount,
-                                        brut_salario: _collection[i].brut_salario,
-                                        commission: _collection[i].commission,
-                                        profit: _collection[i].profit,
-                                    }
-                                });
+                    _sqlConnection.getConnection(function (err, connection) {
+                        connection.query("CALL usp_getConsultantsReport('" + params.fromDate + "', '" + params.toDate + "', '" + params.userList + "')", function (error, results) {
+                            if (error) {
+                                _callbackError(error, result);
                             }
-                            result(true, _users);
-                        }
+                            else {
+                                var _collection = results[0], _users = {}, _months = [];
+                                for (var i = 0; i < _collection.length; i++) {
+                                    var _co_usuario = _collection[i].co_usuario;
+                                    var _userMonths = (_users[_co_usuario]) ? _users[_co_usuario].months : new Array();
+                                    _users[_co_usuario] = {
+                                        co_os: _collection[i].co_os,
+                                        co_status: _collection[i].co_status,
+                                        co_cliente: _collection[i].co_cliente,
+                                        co_usuario: _collection[i].co_usuario,
+                                        no_usuario: _collection[i].no_usuario,
+                                        no_email: _collection[i].no_email,
+                                        nu_telefone: _collection[i].nu_telefone,
+                                        url_foto: _collection[i].url_foto,
+                                        months: _userMonths
+                                    };
+                                    _users[_co_usuario].months.push({
+                                        year: _collection[i].data_year,
+                                        month: _collection[i].data_month,
+                                        information: {
+                                            valor: _collection[i].valor,
+                                            total: _collection[i].total,
+                                            net_amount: _collection[i].net_amount,
+                                            brut_salario: _collection[i].brut_salario,
+                                            commission: _collection[i].commission,
+                                            profit: _collection[i].profit,
+                                        }
+                                    });
+                                }
+                                result(true, _users);
+                            }
+                        });
                     });
                     break;
                 default:
@@ -117,30 +122,14 @@ var ConsultantCollections = (function (_super) {
                     break;
             }
         };
-        if (this.sqlConnection) {
-            this.sqlConnection.ping(function (err) {
-                var _callbackRunCommand = function () {
-                    _data(collectionType, _this.sqlConnection);
-                };
-                if (err) {
-                    _this.sqlConnection = _this.tryCreateSqlConnection();
-                    _data(collectionType, _this.sqlConnection);
-                }
-                else {
-                    _callbackRunCommand();
-                }
-            });
-        }
-        else {
-            this.tryGetSqlConnection(function (err, connection) {
-                if (!err) {
-                    _data(collectionType, connection);
-                }
-                else {
-                    result(false, err);
-                }
-            });
-        }
+        this.tryGetSqlConnection(function (err, connection) {
+            if (!err) {
+                _data(collectionType, connection);
+            }
+            else {
+                result(false, err);
+            }
+        });
     };
     return ConsultantCollections;
 }(base_1.default));

@@ -200,9 +200,9 @@ var agence;
                             break;
                     }
                 };
+                BaseController.$inject = ["serviceFacade"];
                 return BaseController;
             }());
-            BaseController.$inject = ["serviceFacade"];
             controllers.BaseController = BaseController;
         })(controllers = common.controllers || (common.controllers = {}));
     })(common = agence.common || (agence.common = {}));

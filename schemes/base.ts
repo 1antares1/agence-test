@@ -1,7 +1,6 @@
 import * as mysql from "mysql";
 
 let poolConnection: mysql.IPool;
-let sqlConnection: mysql.IConnection;
 let sqlConfig: mysql.IPoolConfig = {
     host: "br-cdbr-azure-south-b.cloudapp.net",
     port: 3306,
@@ -12,45 +11,60 @@ let sqlConfig: mysql.IPoolConfig = {
     debug: false
 };
 
-export function handleDatabase(callback ? : (err: any) => void): void {
+export function handleDatabase(callback ? : (err: any, poolConnect: mysql.IPool) => void): void {
     try {
         poolConnection = mysql.createPool(sqlConfig);
         poolConnection.getConnection((err: mysql.IError, connection: mysql.IConnection) => {
             if (err && callback) {
-                callback({"error": err.message, "stack": err.stack });
+                callback({
+                    "error": err.message,
+                    "stack": err.stack
+                }, null);
                 return;
             }
-            sqlConnection = connection;
             console.log("connected as id " + connection.threadId);
 
             connection.on("error", (err) => {
-                if (callback) callback({"error": err.message, "stack": err.stack });
+                if (callback) callback({
+                    "error": err.message,
+                    "stack": err.stack
+                }, null);
                 return;
             });
+            if (callback) callback(null, poolConnection);
         });
     } catch (e) {
-        if (callback) callback(e);
+        if (callback) callback(e, null);
     }
 }
 
+handleDatabase();
+
 export default class BaseScheme {
-    sqlConnection: mysql.IConnection;
+    sqlConnection: mysql.IPool;
 
     constructor() {}
 
-    tryCreateSqlConnection(): mysql.IConnection {
-        return this.sqlConnection = sqlConnection;
+    tryCreateSqlConnection(): mysql.IPool {
+        return this.sqlConnection = poolConnection;
     }
 
-    tryGetSqlConnection(callback: (reason: mysql.IError, connection: mysql.IConnection) => void): void {
-        let _callbackSuccess = (connect: mysql.IConnection): void => {
-            sqlConnection = (this.sqlConnection = connect);
-            callback(null, sqlConnection);
+    tryGetSqlConnection(callback: (reason: mysql.IError, poolConnect: mysql.IPool) => void): void {
+        let _callbackSuccess = (connect: mysql.IPool): void => {
+            poolConnection = (this.sqlConnection = connect);
+            callback(null, poolConnection);
         };
 
         try {
-            if (sqlConnection) {
-                _callbackSuccess(sqlConnection);
+            if (poolConnection) {
+                _callbackSuccess(poolConnection);
+            } else {
+                handleDatabase((err: any, poolConnect: mysql.IPool) => {
+                    if (err) {
+                        throw err;
+                    }
+                    _callbackSuccess(poolConnect);
+                });
             }
         } catch (e) {
             callback(e, null);
@@ -59,25 +73,11 @@ export default class BaseScheme {
 
     tryCloseSqlConnection(callback ? : (success: boolean, result: any) => void): void {
         try {
-            sqlConnection.connect((err: mysql.IError) => {
-                if (err) {
-                    console.error("error ending connection: " + err.stack);
-                    callback(false, err);
-                    return;
-                }
-                callback(true, sqlConnection);
+            poolConnection.end((err: mysql.IError) => {
+                (err) ? callback(false, err): callback(true, null);
             });
         } catch (e) {
             callback(false, e);
-        }
-    }
-
-    releaseConnection(connection: mysql.IConnection, ending ? : boolean): void {
-        if (connection) {
-            connection.release();
-            if (ending) {
-                this.tryCloseSqlConnection();
-            }
         }
     }
 }

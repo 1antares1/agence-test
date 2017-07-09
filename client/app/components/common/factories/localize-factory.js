@@ -78,9 +78,9 @@ var agence;
                     }
                     return _result;
                 };
+                Localize.$inject = ["$http", "$rootScope", "$window"];
                 return Localize;
             }());
-            Localize.$inject = ["$http", "$rootScope", "$window"];
             factories.Localize = Localize;
             ;
             function factory($http, $rootScope, $window) {
