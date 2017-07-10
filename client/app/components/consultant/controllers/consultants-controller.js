@@ -112,7 +112,7 @@ var agence;
             ConsultantsController.prototype.refresh = function () {
                 var $self = this;
                 $self.$scope.performance.onReadyStateChange(false, "Carregando...");
-                $self.serviceFacade.consultant.getConsultantResource(false).query(function (consultants) {
+                $self.serviceFacade.consultant.getConsultantResource(true).query(function (consultants) {
                     $self.originalModels = consultants;
                     $self.fromUsers = angular.copy($self.originalModels);
                     $self.$scope.performance.onProcessing(false);
