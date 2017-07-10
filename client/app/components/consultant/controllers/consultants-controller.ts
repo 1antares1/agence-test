@@ -150,7 +150,7 @@
         refresh() {
             let $self = this;
             $self.$scope.performance.onReadyStateChange(false, "Carregando...");
-            $self.serviceFacade.consultant.getConsultantResource(true).query((consultants: models.IConsultant[]) => {
+            $self.serviceFacade.consultant.getConsultantResource(false).query((consultants: models.IConsultant[]) => {
                 $self.originalModels = consultants;
                 $self.fromUsers = angular.copy($self.originalModels);
                 $self.$scope.performance.onProcessing(false);
