@@ -18,8 +18,6 @@
 				"NODE_ENV": "development"
 			},
 			"sourceMaps": true,
-			"outFiles": [],
-			"skipFiles": ["node_modules/**/*.js"],
             "console": "internalConsole"
 		},
 		{
