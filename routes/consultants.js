@@ -29,7 +29,7 @@ var ConsultantRoute = (function (_super) {
                         res.send(result);
                     else
                         res.status(404).send({ "error": "A problem has occurred with the consultants.", "stack": result.message || result });
-                }, req.params.id);
+                }, (req.params.id.toString() === "1" ? true : false));
             }
         });
         this.app.use(this.router);

@@ -43,9 +43,10 @@ export class ConsultantCollections extends BaseScheme {
         let _consultants: IConsultant[] = new Array();
         if (reportParams && typeof reportParams === "object") {
             let _params: IConsultantParams = {
-                fromDate: reportParams.fromDate,
-                toDate: reportParams.toDate,
-                userList: (reportParams.userList) ? reportParams.userList.replace(/,/g, "|") : ""
+                fromDate: reportParams.fromDate || null,
+                toDate: reportParams.toDate || null,
+                userList: (reportParams.userList) ? reportParams.userList.replace(/,/g, "|") : "",
+                allConsultants: reportParams.allConsultants || false
             };
 
             this.getDataCollection(CollectionType.report, (success: boolean, response: any) => {
@@ -89,7 +90,7 @@ export class ConsultantCollections extends BaseScheme {
 
                 case CollectionType.consultants:
                     _commandPrepare((connection: mysql.IConnection) => {
-                        connection.query(`CALL usp_getConsultants(${(params.allConsultants) ? 1 : 0})`, (error: mysql.IError, results: any) => {
+                        connection.query(`CALL usp_getConsultants(${(params.allConsultants) ? true : false})`, (error: mysql.IError, results: any) => {
                             connection.release();
 
                             if (error) {

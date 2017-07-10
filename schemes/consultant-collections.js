@@ -35,9 +35,10 @@ var ConsultantCollections = (function (_super) {
         var _consultants = new Array();
         if (reportParams && typeof reportParams === "object") {
             var _params = {
-                fromDate: reportParams.fromDate,
-                toDate: reportParams.toDate,
-                userList: (reportParams.userList) ? reportParams.userList.replace(/,/g, "|") : ""
+                fromDate: reportParams.fromDate || null,
+                toDate: reportParams.toDate || null,
+                userList: (reportParams.userList) ? reportParams.userList.replace(/,/g, "|") : "",
+                allConsultants: reportParams.allConsultants || false
             };
             this.getDataCollection(CollectionType.report, function (success, response) {
                 result(success, response);
@@ -80,7 +81,7 @@ var ConsultantCollections = (function (_super) {
                     break;
                 case CollectionType.consultants:
                     _commandPrepare(function (connection) {
-                        connection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? 1 : 0) + ")", function (error, results) {
+                        connection.query("CALL usp_getConsultants(" + ((params.allConsultants) ? true : false) + ")", function (error, results) {
                             connection.release();
                             if (error) {
                                 _callbackError(error, result);
